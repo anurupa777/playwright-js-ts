@@ -47,11 +47,12 @@ graph TB
             ch4["Ch 4: var / let / const & Hoisting ✅"]
             ch5["Ch 5: Literals (null, number, string, template) ✅"]
             ch6["Ch 6: Operators ✅"]
-            ch7["Ch 7: If / Else"]
-            ch8["Ch 8: Switch"]
-            ch9["Ch 9: Loops"]
-            ch10["Ch 10: Arrays"]
-            ch11["Ch 11: Functions & Strings"]
+            ch7["Ch 7: If / Else ✅"]
+            ch8["Ch 8: Switch ✅"]
+            ch9["Ch 9: User Input ✅"]
+            ch10["Ch 10: Loops ✅"]
+            ch11["Ch 11: Arrays"]
+            ch12_fn["Ch 12: Functions & Strings"]
         end
 
         subgraph adv["⚙️ Advanced JS (Weeks 7–8)"]
@@ -154,13 +155,63 @@ LearnPlaywrightBatch2x/
 │   ├── 38_Confusing_Comparsion.js      # 🔥 == vs === full reference (NaN, [], null, typeof)
 │   ├── 39_Logical_Op.js                # && || !
 │   ├── 40_String_Con_Op.js             # + on strings = concatenation
-│   ├── 41_Ternary_Op.js                # 🚧 a ? b : c (coming next)
-│   ├── 42_Type_Op.js                   # 🚧 typeof, instanceof (coming next)
-│   ├── 43_Incre_Decre_Op.js            # 🚧 ++ -- pre/post (coming next)
-│   └── 44_Null_Op.js                   # 🚧 ?? ?. nullish operators (coming next)
+│   ├── 41_Ternary_Op.js                # condition ? a : b (with nesting, SLA, env URLs)
+│   ├── 42_Type_Op.js                   # typeof — string, number, object, []
+│   ├── 43_Incre_Decre_Op.js            # ++ / -- pre vs post
+│   ├── 44_Null_Op.js                   # ?? nullish coalescing
+│   ├── 45_Post_Increment.js            # post ++ — assign-then-increment
+│   ├── 46_IQ_INCREMENT_D.js            # Interview: value of a++
+│   └── 47_Advance_ID_.js               # 🔥 Pre/post mix in one expression (IQ trap)
+│
+├── chapter_07_If_else/                 ✅ If / Else — control flow basics
+│   ├── 48_IF_ESLE.js                   # Basic if / else with age check
+│   ├── 49_If_elseif_else.js            # Grade ladder with else-if
+│   ├── 50_REAL_IF_ELSE.js              # Nested if-else — login + role checks
+│   ├── 51_API_IF_ELSE.js               # API status code branching
+│   ├── 52_IQ_IF_ELSE.js                # Truthy vs falsy values
+│   ├── 53_IF_ELSE_real.js              # Logical operators + if-else (auth logic)
+│   ├── 54_IQ.js                        # One-line if without braces
+│   ├── 55_IE.js                        # Empty if block
+│   ├── 56_IQ_EVEN_ODD.js               # Even / odd with modulus
+│   ├── 57_Grade_Calc.js                # Grade calculator (A–F)
+│   └── 58_LEAP_YEAR.js                 # Leap year rules (% 4, % 100, % 400)
+│
+├── chapter_08_Switch_Statement/        ✅ Switch cases
+│   ├── 59_Switch.js                    # Switch statement basics
+│   ├── 60_No_Break.js                  # Fall-through when `break` is missing
+│   ├── 61_Default.js                   # `default` branch
+│   ├── 62_REAL_TIME_EXAMPLE.js         # Real-world switch usage
+│   ├── 63_Switch_Group.js              # Grouped cases (shared body)
+│   ├── 64_IQ.js                        # Interview Q — switch trap 1
+│   ├── 65_IQ2.js                       # Interview Q — switch trap 2
+│   ├── 66_IQ3.js                       # Interview Q — switch trap 3
+│   └── 67_IQ4.js                       # Interview Q — switch trap 4
+│
+├── chapter_09_UserInput/               ✅ Reading user input in Node
+│   ├── 68_User_Input.js                # Browser `prompt()` — does NOT work in Node
+│   ├── 69_Node_readline.js             # Node built-in `readline` (async)
+│   └── 70_prompt_sync.js               # `prompt-sync` npm package (sync)
+│
+├── chapter_10_Loops/                   ✅ for, while, do-while, for-of/in, break/continue
+│   ├── 71_For_loop.js                  # Introducing the for loop
+│   ├── 72_For_loop.js                  # for loop with <= condition
+│   ├── 73_For_Loop2.js                 # Variable naming & loop boundaries
+│   ├── 74_IQ.js                        # Nested if/else inside a for loop
+│   ├── 75_For_OF_IN_EACH.js            # while loop — retry logic (arrays preview)
+│   ├── 76_While.js                     # while loop — init, condition, update
+│   ├── 77_Do_While.js                  # do-while — guaranteed one execution
+│   ├── 78_Do_While.js                  # do-while retry example
+│   ├── 79_IQ.js                        # while countdown (i--)
+│   ├── 80_IQ.js                        # do-while off-by-one trap
+│   ├── 81_IQ.js                        # for with `continue`
+│   └── 82_IQ.js                        # do-while infinite-loop trap
 │
 └── README.md                           👋 You are here
 ```
+
+> Each chapter has its **own README.md** with full code walk-throughs and expected output. Jump straight in:
+>
+> [Ch 1](./chapter_01_Basics/README.md) · [Ch 2](./chapter_02_Javascript_Concepts/README.md) · [Ch 3](./chapter_03_Identifier_Literals/README.md) · [Ch 4](./chapter_04_Javascript_Concepts/README.md) · [Ch 5](./chapter_05_Literal/README.md) · [Ch 6](./chapter_06_Operator/README.md) · [Ch 7](./chapter_07_If_else/README.md) · [Ch 8](./chapter_08_Switch_Statement/README.md) · [Ch 9](./chapter_09_UserInput/README.md) · [Ch 10](./chapter_10_Loops/README.md)
 
 > **Legend:** ✅ Done · 🚧 Coming soon
 
@@ -743,6 +794,13 @@ await page.screenshot({ path: `screenshots/${testCase}_${timestamp}.png` });
 | `38_Confusing_Comparsion.js` | 🔥 == vs === | NaN, `[]`, `null`/`undefined`, `typeof null`, `[] == ![]` |
 | `39_Logical_Op.js` | Logical | `&&`, `\|\|`, `!` on booleans |
 | `40_String_Con_Op.js` | String concat | `+` on strings glues them (`"Hi" + " Dev"`) |
+| `41_Ternary_Op.js` | Ternary `? :` | One-line `if/else` — SLA checks, env-based URLs, nested ternaries |
+| `42_Type_Op.js` | `typeof` | Type tag for any value (`"string"`, `"number"`, `"object"`, `"undefined"`) |
+| `43_Incre_Decre_Op.js` | `++` / `--` | Pre vs post increment/decrement — when each is evaluated |
+| `44_Null_Op.js` | Nullish `??` | Fallback **only** for `null`/`undefined` (unlike `\|\|`) |
+| `45_Post_Increment.js` | Post `++` | `a++` returns old value, then increments |
+| `46_IQ_INCREMENT_D.js` | Interview Q | What does `let r = a++` log? |
+| `47_Advance_ID_.js` | 🔥 IQ Trap | `++a + ++a` — read-modify-write order in one expression |
 
 ### Key Concepts
 
@@ -767,6 +825,17 @@ mindmap
       ! NOT
     String
       + concatenation
+    Conditional
+      ternary ? :
+    Type
+      typeof
+    Inc/Dec
+      ++ pre
+      ++ post
+      -- pre
+      -- post
+    Nullish
+      ?? coalescing
 ```
 
 ### Run them
@@ -776,6 +845,10 @@ node chapter_06_Operator/31_Arithmetic_OP.js          # → sum, sub, mul, div
 node chapter_06_Operator/32_Modulus_OP.js             # → 13 % 7, odd/even via % 2
 node chapter_06_Operator/36_Comparsion_Strict_loose.js # → 42 == "42" vs 42 === "42"
 node chapter_06_Operator/38_Confusing_Comparsion.js   # → full == vs === reference
+node chapter_06_Operator/41_Ternary_Op.js             # → ternary, nested, SLA, env URLs
+node chapter_06_Operator/43_Incre_Decre_Op.js         # → ++ / -- pre vs post
+node chapter_06_Operator/44_Null_Op.js                # → ?? nullish fallback
+node chapter_06_Operator/47_Advance_ID_.js            # → ++a + ++a IQ trap
 ```
 
 ---
@@ -961,15 +1034,689 @@ console.log(s);        // "Hi Dev"
 
 ---
 
+### 41 — Ternary Operator `? :`
+
+**Concept:** Ternary is a three-part expression — `condition ? whenTrue : whenFalse` — that **returns** a value. It's the only operator in JS that takes three operands and the cleanest way to assign one of two values based on a boolean.
+
+**Why:** In test code, you reach for it constantly — pick the base URL by environment, pick `headless`/`headed` by CI flag, format pass/fail status, choose retry counts. Ternary keeps the decision and the assignment on one line.
+
+**Q&A — why use this?**
+- **Q: Ternary vs `if/else` — which when?** A: Use ternary when you're **returning or assigning** one of two values. Use `if/else` when you're running **side-effect statements** (logging multiple lines, mutating multiple vars). One value out → ternary. Multiple actions → `if/else`.
+- **Q: Nested ternary — yes or no?** A: 2 levels max, formatted vertically (see `statusCode` example). Beyond that, switch to a lookup map or `if/else if`. Junior reviewers won't follow 4-deep nesting.
+- **Q: Can I `await` inside a ternary?** A: Yes — `await (flag ? api.fast() : api.slow())`. The arms are expressions, so promises are fine.
+
+```mermaid
+flowchart LR
+    C{condition} -->|true| T["return whenTrue"]
+    C -->|false| F["return whenFalse"]
+    T --> O[assign / log / return]
+    F --> O
+    style T fill:#e8f5e9,stroke:#2e7d32
+    style F fill:#fff3e0,stroke:#e65100
+```
+
+```js
+// 41_Ternary_Op.js — real test-code patterns
+
+// 1) Environment-driven base URL
+const env = "staging";
+const baseUrl = env === "prod"
+    ? "https://api.example.com"
+    : "https://staging-api.example.com";
+
+// 2) CI-aware browser mode
+const isCI = true;
+const browserMode = isCI ? "headless" : "headed";
+
+// 3) SLA check formatted inline
+const responseTime = 850, sla = 1000;
+const slaStatus = responseTime <= sla ? "Within SLA ✅" : "SLA breached ❌";
+
+// 4) Nested ternary — HTTP status category (format vertically!)
+const statusCode = 404;
+const category =
+    statusCode < 300 ? "Success" :
+    statusCode < 400 ? "Redirect" :
+    statusCode < 500 ? "Client Error" : "Server Error";
+console.log(`Status ${statusCode}: ${category}`);   // Status 404: Client Error
+```
+
+| Use ternary when | Use `if/else` when |
+|:--|:--|
+| Returning / assigning a value | Running multiple statements |
+| One simple condition | Multiple branches or side effects |
+| Result fits on 1–2 lines | Body needs `{ … }` |
+
+---
+
+### 42 — `typeof` Operator
+
+**Concept:** `typeof x` returns a **string** naming the type of `x` — `"string"`, `"number"`, `"boolean"`, `"undefined"`, `"object"`, `"function"`, `"bigint"`, `"symbol"`. It's a unary operator that never throws (even for undeclared identifiers).
+
+**Why:** In assertions, fixtures, and guards you constantly need to ask "is this thing the type I expect?". `typeof` is the safe, fast answer for primitives — and the *only* way to test for `undefined` without a `ReferenceError` when the variable might not be declared.
+
+**Q&A — why use this?**
+- **Q: Why does `typeof []` return `"object"` and not `"array"`?** A: Arrays are objects under the hood. Use `Array.isArray(x)` to test for arrays — `typeof` can't tell array from plain object.
+- **Q: Why does `typeof null` say `"object"`?** A: 26-year-old bug locked in for backwards compatibility. Test for null with `x === null`, never `typeof`.
+- **Q: Is `typeof` safe on undeclared variables?** A: Yes — `typeof neverDeclared` → `"undefined"`. That makes it the *only* operator that doesn't throw a `ReferenceError` on a missing global. Useful for feature-detection (`typeof window !== "undefined"`).
+
+```mermaid
+mindmap
+  root((typeof))
+    "string"
+      'pramod'
+      "hi"
+      `tpl`
+    "number"
+      42
+      3.14
+      NaN 🤯
+    "boolean"
+      true
+      false
+    "undefined"
+      let x;
+    "object"
+      null 🐛
+      []
+      {}
+    "function"
+      ()=>{}
+    "bigint"
+      123n
+```
+
+```js
+// 42_Type_Op.js
+console.log(typeof "hello");   // "string"
+console.log(typeof 123);       // "number"
+console.log(typeof 31.4);      // "number"   ← no int/float split
+console.log(typeof true);      // "boolean"
+console.log(typeof undefined); // "undefined"
+console.log(typeof null);      // "object"   ← classic JS bug
+console.log(typeof []);        // "object"   ← arrays ARE objects
+console.log(typeof {});        // "object"
+console.log(typeof function() {}); // "function"
+console.log(typeof 123n);      // "bigint"
+```
+
+| To detect | Don't use | Use |
+|:--|:--|:--|
+| `null` | `typeof x` | `x === null` |
+| Array | `typeof x` | `Array.isArray(x)` |
+| `NaN` | `typeof x === "number"` | `Number.isNaN(x)` |
+| Undefined global | bare reference (throws) | `typeof x === "undefined"` |
+
+---
+
+### 43 — Increment / Decrement (`++` / `--`)
+
+**Concept:** `++` adds 1, `--` subtracts 1. The position matters: **pre** (`++a`) increments **first**, then returns the new value. **Post** (`a++`) returns the **old** value, then increments. Same logic for `--`.
+
+**Why:** Loop counters, retry counts, version bumps, and a beloved class of interview puzzles. Mixing pre/post in one expression is the #1 way junior devs get the wrong number.
+
+**Q&A — why use this?**
+- **Q: When does pre vs post actually matter?** A: Only when the value is **used in the same expression**. Standalone `i++;` and `++i;` behave identically. Inside `let b = a++` vs `let b = ++a` — the value of `b` differs.
+- **Q: Is `++` allowed on `const`?** A: No — `++`/`--` reassign the binding (`x = x + 1`), so `const` throws `TypeError: Assignment to constant variable`.
+- **Q: Should I use `++` in tests or stick to `+= 1`?** A: Either works. `+= 1` reads slightly more explicit and avoids the pre/post mistake entirely. Many style guides ban `++` for this reason.
+
+```mermaid
+sequenceDiagram
+    participant Code
+    participant a as a (10)
+    Note over a: let b = a++  (post)
+    Code->>a: read a → 10
+    Code-->>Code: b = 10
+    Code->>a: a = a + 1 → 11
+    Note over a: a is now 11, b is 10
+
+    Note over a: let b = ++a  (pre)
+    Code->>a: a = a + 1 → 12
+    Code->>a: read a → 12
+    Code-->>Code: b = 12
+    Note over a: a is now 12, b is 12
+```
+
+```js
+// 43_Incre_Decre_Op.js  +  45_Post_Increment.js  +  46_IQ_INCREMENT_D.js
+
+// Post-decrement: return OLD, then decrement
+let a = 10;
+let b = a--;
+console.log(b);   // 10  ← old value
+console.log(a);   //  9  ← decremented after
+
+// Post-increment: return OLD, then increment
+let a_post = 10;
+let p = a_post++;
+console.log(a_post); // 11
+console.log(p);      // 10
+
+// Interview: what does this log?
+let x = 34;
+let result = x++;
+console.log(result); // 34   ← post returns old
+console.log(x);      // 35
+```
+
+| Form | Returns | Then |
+|:----:|:--------|:-----|
+| `++a` | new value (a+1) | a is incremented |
+| `a++` | old value (a) | a is incremented |
+| `--a` | new value (a-1) | a is decremented |
+| `a--` | old value (a) | a is decremented |
+
+---
+
+### 44 — Nullish Coalescing `??`
+
+**Concept:** `a ?? b` returns `a` **unless** `a` is `null` or `undefined`, in which case it returns `b`. Unlike `||`, it does **not** fall through on other falsy values like `0`, `""`, or `false`.
+
+**Why:** When `0` or `""` is a **valid** value (port number, search query, page index) but you still want to default `null`/`undefined`, `||` gives the wrong answer. `??` is the precise fix that ships in every modern config and options object.
+
+**Q&A — why use this?**
+- **Q: `??` vs `||` — when to switch?** A: Use `??` when `0`/`""`/`false` are valid values you want to keep. Use `||` when *any* falsy means "fall back" (typical for object/string defaults).
+- **Q: Can I combine `??` with `&&` or `||`?** A: Only with parentheses — `a ?? b || c` is a SyntaxError. Write `(a ?? b) || c` explicitly. JS forces the parens so the precedence is unambiguous.
+- **Q: Does `??` work on `NaN`?** A: No — `NaN` is **not** nullish. `NaN ?? "fallback"` returns `NaN`. Only `null` and `undefined` trigger the fallback.
+
+```mermaid
+flowchart LR
+    A["a ?? b"] --> Q{a is null<br/>or undefined?}
+    Q -->|Yes| RB[return b]
+    Q -->|No| RA[return a]
+    RA --> Note0[0, '', false → kept ✅]
+    style RA fill:#e8f5e9,stroke:#2e7d32
+    style RB fill:#fff3e0,stroke:#e65100
+```
+
+```js
+// 44_Null_Op.js
+const amul = null;
+const milk = amul ?? "nandani milk";
+console.log(milk);            // "nandani milk"
+
+// The classic || vs ?? trap
+const port_or = 0 || 3000;    // 3000  ← || treats 0 as falsy (wrong if 0 valid)
+const port_nc = 0 ?? 3000;    //    0  ← ?? keeps 0 ✅
+
+const query_or = "" || "default"; // "default" ← may not be what you want
+const query_nc = "" ?? "default"; //        "" ← keeps empty string ✅
+```
+
+| Value | `value \|\| "fallback"` | `value ?? "fallback"` |
+|:-----:|:-----------------------:|:----------------------:|
+| `null` | `"fallback"` | `"fallback"` |
+| `undefined` | `"fallback"` | `"fallback"` |
+| `0` | `"fallback"` ❌ | `0` ✅ |
+| `""` | `"fallback"` ❌ | `""` ✅ |
+| `false` | `"fallback"` ❌ | `false` ✅ |
+| `NaN` | `"fallback"` | `NaN` |
+
+---
+
+### 47 — Pre/Post Mixed in One Expression (🔥 IQ Trap)
+
+**Concept:** When `++a` and/or `a++` appear **inside the same expression**, each sub-expression evaluates left-to-right: each `++a` mutates `a` and reads the **new** value; each `a++` reads the **old** value and mutates `a`. Track `a` step by step.
+
+**Why:** Pure interview-trap territory — and shows up in real bugs when someone "cleverly" combines a counter increment with a use of the counter. The cure is to never write expressions like this in production. The skill is reading them when other people did.
+
+**Q&A — why use this?**
+- **Q: `let a = 10; console.log(++a + ++a)` — what's logged?** A: `23`. Step 1: `++a` → `a = 11`, returns `11`. Step 2: `++a` → `a = 12`, returns `12`. Sum: `11 + 12 = 23`.
+- **Q: `let a = 10; console.log(a++ + ++a)` — what's logged?** A: `22`. Step 1: `a++` returns `10`, then `a = 11`. Step 2: `++a` → `a = 12`, returns `12`. Sum: `10 + 12 = 22`.
+- **Q: Should I ever write code like this?** A: No. If a reviewer needs a whiteboard to follow your expression, rewrite as separate `a += 1` lines.
+
+```mermaid
+sequenceDiagram
+    participant E as Expression
+    participant a as a (10)
+    Note over E,a: ++a + ++a
+    E->>a: ++a → a = 11
+    a-->>E: 11
+    E->>a: ++a → a = 12
+    a-->>E: 12
+    E-->>E: 11 + 12 = 23
+    Note over a: final a = 12
+```
+
+```js
+// 47_Advance_ID_.js — the three IQ classics
+// Track a step by step. Don't guess.
+
+let a = 10;
+console.log(++a + ++a);  // 23   (a → 11, then 12; 11+12)
+console.log(a);          // 12
+
+let b = 10;
+console.log(b++ + ++b);  // 22   (b++ → 10 with b→11; ++b → 12; 10+12)
+console.log(b);          // 12
+
+let c = 10;
+console.log(++c + c);    // 22   (++c → 11 then read c → 11; 11+11)
+console.log(c);          // 11
+```
+
+**Takeaway:** When you see mixed `++`/`--` in an expression, replace each occurrence in your head with its pre/post rule, mutate the variable as you go, and **never write this code yourself** — use `a += 1` lines and reference `a` afterwards.
+
+---
+
+## 📖 What's in Chapter 7 — If / Else (Available Now)
+
+### Files
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `48_IF_ESLE.js` | Basic if/else | Vote eligibility with `age > 18` |
+| `49_If_elseif_else.js` | Else-if ladder | Grade scoring (A → F) |
+| `50_REAL_IF_ELSE.js` | Nested if/else | Login check → role-based access (admin / editor / viewer) |
+| `51_API_IF_ELSE.js` | API branching | Status-code-driven console messages |
+| `52_IQ_IF_ELSE.js` | Truthy vs falsy | Which values count as `true` / `false` in an `if` |
+| `53_IF_ELSE_real.js` | Logical + if/else | Combine `&&` / `\|\|` with nested conditions (auth logic) |
+| `54_IQ.js` | One-line if | `if` without braces — when it works |
+| `55_IE.js` | Empty if | A bare `if (true) { }` block |
+| `56_IQ_EVEN_ODD.js` | Even / odd | `% 2 === 0` check |
+| `57_Grade_Calc.js` | Grade calculator | Clean else-if ladder for marks → A–F |
+| `58_LEAP_YEAR.js` | Leap year | `% 4 && !% 100 \|\| % 400` rule |
+
+### Key Concepts
+
+```mermaid
+mindmap
+  root((Chapter 7 — If / Else))
+    Basic
+      if
+      else
+    Ladder
+      if ... else if ... else
+    Nested
+      if inside if
+    Truthy
+      non-zero numbers
+      non-empty strings
+      objects / arrays
+    Falsy
+      0
+      ""
+      null
+      undefined
+      NaN
+    Logical combo
+      &&  both true
+      ||  either true
+```
+
+### Run them
+
+```bash
+node chapter_07_If_else/48_IF_ESLE.js           # → "You are allowed to vote!"
+node chapter_07_If_else/49_If_elseif_else.js    # → grade for score = 78
+node chapter_07_If_else/50_REAL_IF_ELSE.js      # → role-based welcome message
+node chapter_07_If_else/51_API_IF_ELSE.js       # → API status messages
+node chapter_07_If_else/52_IQ_IF_ELSE.js        # → truthy / falsy surprise
+node chapter_07_If_else/53_IF_ELSE_real.js     # → "Allowed to enter"
+node chapter_07_If_else/56_IQ_EVEN_ODD.js      # → "7 is Odd"
+node chapter_07_If_else/57_Grade_Calc.js       # → "Grade: B"
+node chapter_07_If_else/58_LEAP_YEAR.js        # → "2024 is a Leap Year"
+```
+
+---
+
+### 48 — Basic If / Else
+
+**Concept:** An `if` statement evaluates a condition. If the condition is *truthy*, the first block runs; otherwise the `else` block runs. It's the simplest form of control flow.
+
+**Why:** Every program needs decisions — "is the user logged in?", "is the API 200?", "is the price > budget?". If/else is the first tool for that.
+
+```js
+// 48_IF_ESLE.js
+let age = 20;
+if (age > 18) {
+    console.log("You are allowed to vote!");
+} else {
+    console.log("You are not allowed to vote!");
+}
+```
+
+---
+
+### 52 — Truthy vs Falsy
+
+**Concept:** In a boolean context (`if`, `while`, `&&`, `||`), JS coerces values to `true` or `false`. "Falsy" values are `0`, `""`, `null`, `undefined`, `NaN`, and `false`. Everything else is "truthy".
+
+**Why:** Debugging "why didn't my if-block run?" usually comes down to a falsy value you didn't expect — especially `0` or `""`.
+
+```js
+// 52_IQ_IF_ELSE.js
+if ("hello") console.log("String is truthy");   // prints
+if (42)      console.log("Number is truthy");   // prints
+if ({})      console.log("Empty object is truthy!"); // prints
+if ([])      console.log("Empty array is truthy!");  // prints
+
+if ("")      console.log("Won't print");          // "" is falsy
+if (0)       console.log("Won't print");          // 0 is falsy
+if (null)   console.log("Won't print");          // null is falsy
+```
+
+| Value | Truthy? |
+|-------|:-------:|
+| `"hello"` | ✅ |
+| `42` | ✅ |
+| `-1` | ✅ |
+| `0` | ❌ |
+| `""` | ❌ |
+| `" "` | ✅ |
+| `null` | ❌ |
+| `undefined` | ❌ |
+| `NaN` | ❌ |
+| `{}` | ✅ |
+| `[]` | ✅ |
+
+---
+
+### 58 — Leap Year
+
+**Concept:** A year is a leap year if it is divisible by 4 **and not** divisible by 100, **or** it is divisible by 400.
+
+**Why:** Classic interview question that tests understanding of compound boolean logic and operator precedence.
+
+```js
+// 58_LEAP_YEAR.js
+let year = 2024;
+if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
+    console.log(year + " is a Leap Year");
+} else {
+    console.log(year + " is NOT a Leap Year");
+}
+```
+
+---
+
+## 📖 What's in Chapter 8 — Switch Statement (Available Now)
+
+> 🔗 **Full walk-through:** [chapter_08_Switch_Statement/README.md](./chapter_08_Switch_Statement/README.md)
+
+### Files
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `59_Switch.js` | Switch basics | `switch (expr)` with `case` and `default` |
+| `60_No_Break.js` | Fall-through | What happens when you forget `break` |
+| `61_Default.js` | `default` | The catch-all branch |
+| `62_REAL_TIME_EXAMPLE.js` | Real-world | Status / role / env routing with `switch` |
+| `63_Switch_Group.js` | Grouped cases | Multiple `case` labels sharing one body |
+| `64_IQ.js` | Interview Q | Switch trap #1 |
+| `65_IQ2.js` | Interview Q | Switch trap #2 |
+| `66_IQ3.js` | Interview Q | Switch trap #3 |
+| `67_IQ4.js` | Interview Q | Switch trap #4 |
+
+### Key Concepts
+
+```mermaid
+mindmap
+  root((Chapter 8 — Switch))
+    switch
+      expression
+      strict ===
+    case
+      value match
+      break to exit
+      grouped cases
+    default
+      fallback
+    fall-through
+      missing break
+```
+
+---
+
+## 📖 What's in Chapter 9 — User Input (Available Now)
+
+> 🔗 **Full walk-through:** [chapter_09_UserInput/README.md](./chapter_09_UserInput/README.md)
+
+### Files
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `68_User_Input.js` | `prompt()` (browser) | Browser-only API — fails in Node with `ReferenceError` |
+| `69_Node_readline.js` | Node `readline` | Built-in module, async `rl.question()` for terminal input |
+| `70_prompt_sync.js` | `prompt-sync` | npm package for synchronous terminal input |
+
+### Key Concepts
+
+```mermaid
+mindmap
+  root((Chapter 9 — User Input))
+    Browser
+      prompt&#40;&#41;
+      not in Node
+    Node built-in
+      readline
+      async callback
+      rl.close&#40;&#41;
+    npm package
+      prompt-sync
+      synchronous
+      one-liner
+    Always
+      input is string
+      Number&#40;input&#41; to parse
+```
+
+| Approach | Where it runs | Style | Needs install |
+|----------|---------------|-------|:--:|
+| `prompt()` | Browser only | Sync | ❌ (built-in to browser) |
+| `readline` | Node | Async (callback) | ❌ (built-in to Node) |
+| `prompt-sync` | Node | Sync | ✅ (`npm i prompt-sync`) |
+
+---
+
+## 📖 What's in Chapter 10 — Loops (Available Now)
+
+> 🔗 **Full walk-through:** [chapter_10_Loops/README.md](./chapter_10_Loops/README.md)
+
+### Files
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `71_For_loop.js` | For loop intro | Why loops exist — replacing repeated `console.log` lines |
+| `72_For_loop.js` | For with `<=` | `i = 0; i <= 5` runs 6 times (0 through 5) |
+| `73_For_Loop2.js` | Loop boundaries | `i <= 10` vs `i < 10` — 11 vs 10 iterations |
+| `74_IQ.js` | Loop + if/else | Combine loops with conditional branching |
+| `75_For_OF_IN_EACH.js` | while retry | while loop as a retry mechanism |
+| `76_While.js` | while loop | Three parts: init, condition, update |
+| `77_Do_While.js` | do-while | Guaranteed one execution regardless of condition |
+| `78_Do_While.js` | do-while retry | Retry with do-while (always runs at least once) |
+| `79_IQ.js` | while countdown | Decrementing loop — `i--` instead of `i++` |
+| `80_IQ.js` | do-while trap | Do-while off-by-one: runs once even when condition is false |
+| `81_IQ.js` | continue in for | `continue` skips current iteration, next one runs |
+| `82_IQ.js` | do-while infinite | do-while with always-true condition |
+
+### Key Concepts
+
+```mermaid
+mindmap
+  root((Chapter 10 — Loops))
+    for
+      init; condition; update
+      i++ increment
+      i-- decrement
+    while
+      checks condition first
+      might never run
+    do-while
+      runs at least once
+      checks after body
+    break
+      exits loop early
+    continue
+      skips current iteration
+```
+
+### Run them
+
+```bash
+node chapter_10_Loops/71_For_loop.js          # → 1 to 10 + introduction
+node chapter_10_Loops/72_For_loop.js          # → 0, 1, 2, 3, 4, 5
+node chapter_10_Loops/73_For_Loop2.js         # → 0 to 10 (11 iterations)
+node chapter_10_Loops/74_IQ.js               # → for + if/else
+node chapter_10_Loops/75_For_OF_IN_EACH.js   # → while retry
+node chapter_10_Loops/76_While.js            # → while countdown
+node chapter_10_Loops/77_Do_While.js         # → do-while guaranteed run
+node chapter_10_Loops/78_Do_While.js         # → do-while retry
+node chapter_10_Loops/79_IQ.js               # → 5, 4, 3, 2, 1
+node chapter_10_Loops/80_IQ.js               # → 0 (do-while off-by-one)
+node chapter_10_Loops/81_IQ.js               # → 0, 2 (continue skips 1)
+node chapter_10_Loops/82_IQ.js               # → 1 only (infinite if not careful)
+```
+
+### 71 — For Loop
+
+**Concept:** A `for` loop replaces manually repeating `console.log` calls. It has three parts: **initialization** (`let i = 0`), **condition** (`i < N`), and **update** (`i++`). The body runs while the condition is true.
+
+**Why:** Anywhere you need to iterate a known number of times — processing test data rows, retrying a flaky API, generating N test values.
+
+```js
+// 71_For_loop.js — the "why loops" file
+console.log(1);
+console.log(2);
+console.log(3);
+// ... imagine 100 lines ...
+console.log(10);
+
+// For Loop — helps you repeat a block of code
+```
+
+```js
+// 72_For_loop.js — basic for with <=
+for (let i = 0; i <= 5; i++) {
+    console.log(i);  // 0, 1, 2, 3, 4, 5
+}
+```
+
+| File | `for` loop | Iterations | Output |
+|:--|:--|:--:|:--|
+| `72_For_loop.js` | `i = 0; i <= 5; i++` | 6 | 0, 1, 2, 3, 4, 5 |
+| `73_For_Loop2.js` | `i = 0; i <= 10; i++` | 11 | 0 to 10 |
+| `74_IQ.js` | `i = 0; i < 18; i++` + if/else | 18 | conditional gift logic |
+
+**Key pattern — three parts of a for loop:**
+
+```mermaid
+flowchart LR
+    I["init<br/>let i = 0"] --> C{"condition<br/>i < 5 ?"}
+    C -->|true| B[run body]
+    B --> U["update<br/>i++"]
+    U --> C
+    C -->|false| D[Done ✅]
+    style I fill:#e3f2fd,stroke:#01579b
+    style C fill:#fff3e0,stroke:#e65100
+    style U fill:#f3e5f5,stroke:#7b1fa2
+```
+
+### 76 — While Loop
+
+**Concept:** `while (condition) { … }` checks the condition **before** each iteration. If the condition is already false, the body **never runs**. Three essential parts: init (`let i = 0`), condition (`i < 5`), update (`i++`).
+
+**Why:** Use when you don't know how many iterations you need — retrying an API until it succeeds, reading lines until EOF, polling until a condition is met.
+
+```js
+// 76_While.js — the three-part pattern
+let attempt = 0;          // init
+while (attempt < 3) {     // condition
+    console.log(attempt);
+    attempt++;            // update
+}
+
+let modi = 1;
+while (modi <= 15) {
+    console.log("Modi will do 15+ years");
+    modi++;
+}
+```
+
+### 77 — Do-While Loop
+
+**Concept:** `do { … } while (condition)` runs the body **at least once** — the condition is checked *after* the body. Guaranteed one execution regardless of the condition.
+
+**Why:** "Try once, then check if you need to retry" — perfect for login prompts, data fetch + retry, or any action that must happen at least once.
+
+```js
+// 77_Do_While.js — runs once even when a >= 10
+let a = 10;
+do {
+    console.log(a);   // prints 10
+    a++;
+} while (a < 10);     // condition already false, but body ran
+
+// 78_Do_While.js — retry pattern
+let retry = 0;
+do {
+    console.log("Execute a code!");
+    console.log("Retrying.....", retry);
+    retry++;
+} while (retry < 3);
+```
+
+| Loop type | Condition check | Minimum runs | When to use |
+|:--|:--|:--:|:--|
+| `for` | Before each iteration | 0 | Known iteration count |
+| `while` | Before each iteration | 0 | Unknown count, maybe zero |
+| `do-while` | After each iteration | **1** | Must run at least once |
+
+### 79–80 — IQ: Countdown & Off-by-One
+
+**Concept:** `i--` decrements the counter — same loop, different direction. Do-while off-by-one: when the condition starts false, it still executes once (the body prints, then the condition fails).
+
+```js
+// 79_IQ.js — countdown
+let i = 5;
+while (i > 0) {
+    console.log(i);   // 5, 4, 3, 2, 1
+    i--;
+}
+
+// 80_IQ.js — do-while off-by-one trap
+let i = 0;
+do {
+    console.log(i);   // prints 0 (once), then condition fails
+    i--;
+} while (i > 0);      // i is -1, condition is false → loop ends
+```
+
+### 81 — Continue
+
+**Concept:** `continue` skips the **rest of the current iteration** and jumps to the next one. Unlike `break`, it doesn't exit the loop — it only skips.
+
+```js
+// 81_IQ.js
+for (let i = 0; i < 3; i++) {
+    if (i === 1) continue;    // skip the rest when i is 1
+    console.log(i);           // 0, 2
+}
+```
+
+### 82 — Do-While Always-True Trap
+
+**Concept:** A do-while loop where the condition is always true will run **forever** (infinite loop) unless you `break` or it's intentionally bounded.
+
+```js
+// 82_IQ.js — pattern: runs at least once
+let n = 1;
+do {
+    console.log(n);   // prints 1
+} while (n < 3);      // 1 < 3 → true → runs again... wait, there's no update!
+```
+
+**Takeaway:** Always include an update (`n++`) or a `break` inside a loop body. No update = infinite loop = frozen program.
+
+---
+
 ## 🔭 What's Coming Next
 
 ```mermaid
 graph TD
-    subgraph next["Next Up — Operators (rest) & Control Flow"]
-        N1["Ch 6: Ternary, typeof, ++/--, ?? ?. (files 41–44)"] --> N2[Ch 7: If / Else Statements]
-        N2 --> N3[Ch 8: Switch Cases]
-        N3 --> N4[Ch 9: Loops — for, while, do-while]
-        N4 --> N5[Ch 10: Arrays & Functions]
+    subgraph next["Next Up — Arrays, Functions & More"]
+        N1[Ch 11: Arrays] --> N2[Ch 12: Functions & Strings]
+        N2 --> N3[Ch 13: Objects]
     end
 
     style next fill:#fff3e0,stroke:#e65100
@@ -978,7 +1725,13 @@ graph TD
 **Just shipped:**
 - ✅ Chapter 4 extended with **Temporal Dead Zone (TDZ)** deep-dive (files `18`–`21`)
 - ✅ Chapter 5 — **Literals**: null/undefined, every number form, strings, template literals (files `22`–`29`)
-- ✅ Chapter 6 — **Operators**: arithmetic, comparison (`==` vs `===`), confusing-comparisons reference, logical, string concat (files `30`–`40`)
+- ✅ Chapter 6 — **Operators (Part 1)**: arithmetic, comparison (`==` vs `===`), confusing-comparisons reference, logical, string concat (files `30`–`40`)
+- ✅ Chapter 6 — **Operators (Part 2)**: ternary `? :`, `typeof`, `++`/`--` pre/post, nullish `??`, mixed-increment IQ trap (files `41`–`47`)
+- ✅ Chapter 7 — **If / Else**: basic if/else, else-if ladder, nested conditions, truthy/falsy, logical operators, IQ problems (files `48`–`58`)
+- ✅ Chapter 8 — **Switch Statement**: switch basics, fall-through, default, grouped cases, IQ traps (files `59`–`67`)
+- ✅ Chapter 9 — **User Input**: browser `prompt()`, Node `readline`, `prompt-sync` (files `68`–`70`)
+- ✅ Chapter 10 — **Loops**: for, while, do-while, continue, IQ traps (files `71`–`82`)
+- ✅ **Per-chapter README** — every chapter folder now has its own deep-dive README.md
 
 ---
 
