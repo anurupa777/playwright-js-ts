@@ -1,4 +1,4 @@
-# VS Code Keyboard Shortcuts — Windows
+# VS Code Keyboard Shortcuts - Windows
 
 > Default keybindings for Visual Studio Code on Windows.
 

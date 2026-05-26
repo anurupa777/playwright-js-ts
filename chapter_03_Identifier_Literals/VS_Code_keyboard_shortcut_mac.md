@@ -1,7 +1,6 @@
-# VS Code Keyboard Shortcuts — macOS
+# VS Code Keyboard Shortcuts - macOS
 
 > Default keybindings for Visual Studio Code on macOS.
-
 
 ---
 
