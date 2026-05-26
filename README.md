@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Learn Playwright Batch 2x
 
 <div align="center">
@@ -68,7 +69,6 @@ graph TB
         subgraph ts["🟦 TypeScript (Week 9)"]
             ts1["Ch 19: TS Fundamentals"]
             ts2["Ch 20: Interfaces"]
-            ts3["Ch 21: Enums"]
             ts4["Ch 22: Generics"]
             ts5["Ch 23: Access Modifiers & Decorators"]
         end
@@ -87,7 +87,6 @@ graph TB
     end
 
     js --> adv --> ts --> pw --> extras
-
     style js fill:#e1f5fe,stroke:#01579b
     style adv fill:#fff3e0,stroke:#e65100
     style ts fill:#e0f7fa,stroke:#00838f
@@ -97,12 +96,7 @@ graph TB
 
 ---
 
-## 📚 Current Folder Structure
-
-```
-LearnPlaywrightBatch2x/
 ├── chapter_01_Basics/                  ✅ Hello World, env setup, hot code
-│   ├── 01_Basics.js                    # First console.log program
 │   ├── 02_JS.js                        # Variables & a simple loop
 │   ├── 03_JS_Verify_Setup.js           # Verify Node.js/OS/arch
 │   └── 04_HotCode.js                   # JIT & "hot" code paths
@@ -219,7 +213,6 @@ LearnPlaywrightBatch2x/
 
 ## 🚀 Quick Start
 
-### Prerequisites
 
 | Tool | Version | Purpose |
 |------|---------|---------|
@@ -238,7 +231,6 @@ cd LearnPlaywrightBatch2x
 # 2. Verify your setup
 node chapter_01_Basics/03_JS_Verify_Setup.js
 
-# 3. Run your first JS program
 node chapter_01_Basics/01_Basics.js
 ```
 
@@ -249,11 +241,6 @@ $ node chapter_01_Basics/01_Basics.js
 Hello The Testing Academy
 ```
 
-If you see that line, you're all set! 🎉
-
----
-
-## 📅 Weekly Plan
 
 ```mermaid
 journey
@@ -1863,3 +1850,8 @@ npx playwright show-trace <trace.zip>    # Open trace viewer
 — Pramod & The Testing Academy team
 
 </div>
+=======
+# playwright-js-ts
+This repo contains programming about JS and TS and playwright automation
+
+>>>>>>> 734d463e4efe4e5a9c7c0f5e2b0a643f76b63600
