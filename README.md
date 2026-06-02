@@ -53,7 +53,7 @@ graph TB
             ch9["Ch 9: User Input ✅"]
             ch10["Ch 10: Loops ✅"]
             ch11["Ch 11: Arrays ✅"]
-            ch12_fn["Ch 12: Functions & Strings"]
+            ch12_fn["Ch 12: Functions ✅"]
         end
 
         subgraph adv["⚙️ Advanced JS (Weeks 7–8)"]
@@ -200,7 +200,7 @@ graph TB
 │   ├── 81_IQ.js                        # for with `continue`
 │   └── 82_IQ.js                        # do-while infinite-loop trap
 │
-├── chapter_11_Arrays/                  ✅ Arrays — creation, access, add/remove, search, iterate, transform
+├── chapter_11_Arrays/                  ✅ Arrays — creation, access, add/remove, search, iterate, transform, sort, slice/splice, concat, checking
 │   ├── 83_Arrays.js                    # Arrays basics — literal, index, length, mixed types
 │   ├── 84_Arrays.js                    # Array constructor, Array.of(), Array.from()
 │   ├── 85_Access_Array.js              # Accessing & modifying elements, .at() with negative index
@@ -209,7 +209,35 @@ graph TB
 │   ├── 88_REAL_Example.js              # Real-world browser list manipulation
 │   ├── 89_Searching.js                 # indexOf, lastIndexOf, includes, find, findIndex, findLast
 │   ├── 90_Iterate.js                   # for, for...of, forEach, for...in, .entries()
-│   └── 91_Transform_Array.js           # map, filter, reduce, flat
+│   ├── 91_Transform_Array.js           # map, filter, reduce, flat
+│   ├── 92_Arrays.js                    # sort — lexicographic default, compareFn for numeric/desc
+│   ├── 93_Array_Slicing.js             # slice (non-destructive copy) vs splice (in-place surgery)
+│   ├── 94_Concat_array.js              # concat, spread (...), join
+│   └── 95_Array_Checking.js            # Array.isArray, every, some
+│
+├── chapter_12_Funtions/                ✅ Functions — declaration, params/args, return, expressions, arrow, IIFE, default/rest/spread, scope, closure, HOF, pure
+│   ├── 96_Functions.js                 # Define + call — first function
+│   ├── 97_Type1_Fn_Basic_Functions.js  # Type 1 — no params, no return (returns undefined)
+│   ├── 98_Type2_Fn_With_Param_No_Return.js  # Type 2 — params, no return
+│   ├── 99_Type3_Fn_without_Param_Return_Type.js # Type 3 — no params, with return
+│   ├── 100_Type4_Fn_With_Param_With_Return.js   # Type 4 — params + return (the standard form)
+│   ├── 101_Template_literal.js         # Return template literal — `Hello, ${name}`
+│   ├── 102_Fn_Expression.js            # Function expression — anonymous fn assigned to const
+│   ├── 103_Arrow_Fn.js                 # Arrow function — concise ES6 form
+│   ├── 104_Arrow_Fn_REAL.js            # Real-world: validateStatusCode in all 3 forms
+│   ├── 105_IIFE.js                     # Immediately Invoked Function Expression — runs once, on definition
+│   ├── 106_Default_Param_Fn.js         # Default parameters — `function retry(name, max = 3)`
+│   ├── 107_IQ.js                       # Param + return basic IQ — runTest formatter
+│   ├── 108_Rest_Param_Fn.js            # Rest parameters — `...results` collects extras
+│   ├── 109_IQ.js                       # IQ trap — calling const-expr before declaration → TDZ
+│   ├── 110_Spead_IQ.js                 # Spread `...arr` at call-site + rest at definition
+│   ├── 111_Scope._Fn.js                # Scope — global vs local, what a function can reach
+│   ├── 112_IQ.js                       # IQ — nested scope, inner is not visible from outer
+│   ├── 113_Closure.js                  # Closure — inner function remembers outer variables
+│   ├── 114_Closure.js                  # Closure for state — counter (increment/decrement/get)
+│   ├── 115_API_REAL_Closure.js         # Real-world closure — retry tracker per test
+│   ├── 116_Higher_Order_Fn.js          # Higher-Order Function — takes/returns a function
+│   └── 117_Pure_Fn.js                  # Pure functions — same input → same output, no side effects
 │
 └── README.md                           👋 You are here
 ```
@@ -1725,6 +1753,10 @@ do {
 | `89_Searching.js` | Searching | `indexOf`, `lastIndexOf`, `includes`, `find`, `findIndex`, `findLast`, `findLastIndex` |
 | `90_Iterate.js` | Iteration | `for`, `for...of`, `forEach`, `for...in`, `.entries()` |
 | `91_Transform_Array.js` | Transform | `map`, `filter`, `reduce`, `flat` |
+| `92_Arrays.js` | Sorting | `sort()` default is lexicographic; pass `(a,b)=>a-b` for numeric |
+| `93_Array_Slicing.js` | `slice` vs `splice` | `slice` returns a copy (safe); `splice` mutates in place (surgery) |
+| `94_Concat_array.js` | Combine | `concat`, spread `...`, `join("|")` |
+| `95_Array_Checking.js` | Predicates | `Array.isArray`, `every` (ALL pass), `some` (AT LEAST ONE passes) |
 
 ### Key Concepts
 
@@ -1763,6 +1795,20 @@ mindmap
       filter
       reduce
       flat
+    Sort
+      default lexicographic
+      (a,b)=>a-b numeric
+    Slice vs Splice
+      slice = copy
+      splice = mutate
+    Combine
+      concat
+      spread ...
+      join
+    Check
+      Array.isArray
+      every
+      some
 ```
 
 ### Run them
@@ -1777,6 +1823,10 @@ node chapter_11_Arrays/88_REAL_Example.js         # → real browser list exampl
 node chapter_11_Arrays/89_Searching.js            # → indexOf, includes, find, findIndex
 node chapter_11_Arrays/90_Iterate.js              # → 5 ways to iterate arrays
 node chapter_11_Arrays/91_Transform_Array.js      # → map, filter, reduce, flat
+node chapter_11_Arrays/92_Arrays.js               # → sort default (lexicographic) + numeric/desc
+node chapter_11_Arrays/93_Array_Slicing.js        # → slice vs splice
+node chapter_11_Arrays/94_Concat_array.js         # → concat, spread, join
+node chapter_11_Arrays/95_Array_Checking.js       # → Array.isArray, every, some
 ```
 
 ### 83 — Arrays Basics
@@ -1998,15 +2048,882 @@ let passed = results
 console.log(passed);  // ["Login", "Search"]
 ```
 
+### 92 — Sorting (the lexicographic trap)
+
+**Concept:** `arr.sort()` with **no compare function** converts every element to a string and sorts by UTF-16 code units. That's why `[10, 1, 21, 2].sort()` returns `[1, 10, 2, 21]` — `"10"` comes before `"2"` because `'1' < '2'` character-wise. Pass a compare function `(a, b) => a - b` for true numeric ascending; `(a, b) => b - a` for descending.
+
+**Why:** Sorting numeric test data, scores, response times, or status codes by default `sort()` silently produces wrong order. This is one of the most common bugs in beginner test code — and a frequent interview question.
+
+**Q&A — why use this?**
+- **Q: Why is `[10, 1, 21, 2].sort()` → `[1, 10, 2, 21]`?** A: Default sort compares values as strings. `"10"` < `"2"` because `'1'` (49) < `'2'` (50) in UTF-16. Always pass a compare function for numbers.
+- **Q: What does the compare function return?** A: `< 0` → `a` comes first; `> 0` → `b` comes first; `0` → keep order. `a - b` is ascending, `b - a` is descending.
+- **Q: Does `sort()` mutate the original array?** A: Yes — it sorts in place **and** returns the same reference. Use `[...arr].sort(...)` if you need to preserve the original.
+
+```mermaid
+flowchart LR
+    A["[10, 1, 21, 2].sort()"] --> B[coerce → strings]
+    B --> C{compare UTF-16}
+    C --> D["[1, 10, 2, 21] ❌"]
+    A2["[10, 1, 21, 2].sort((a,b)=>a-b)"] --> C2[numeric compare]
+    C2 --> D2["[1, 2, 10, 21] ✅"]
+    style D fill:#ffebee,stroke:#c62828
+    style D2 fill:#e8f5e9,stroke:#2e7d32
+```
+
+```js
+// 92_Arrays.js
+let nums = [10, 1, 21, 2];
+nums.sort();                       // [1, 10, 2, 21]   ← lexicographic
+nums.sort((a, b) => a - b);        // [1, 2, 10, 21]   ← numeric ascending
+nums.sort((a, b) => b - a);        // [21, 10, 2, 1]   ← numeric descending
+
+let fruits = ["banana", "apple", "cherry"];
+fruits.sort();                     // ["apple", "banana", "cherry"]  ← strings sort correctly by default
+```
+
+| Call | Returns | Why |
+|:--|:--|:--|
+| `[10, 1, 21, 2].sort()` | `[1, 10, 2, 21]` | Lexicographic (string compare) |
+| `[10, 1, 21, 2].sort((a,b)=>a-b)` | `[1, 2, 10, 21]` | Numeric ascending |
+| `[10, 1, 21, 2].sort((a,b)=>b-a)` | `[21, 10, 2, 1]` | Numeric descending |
+| `["b", "a", "c"].sort()` | `["a", "b", "c"]` | Strings → lexicographic is correct |
+
+---
+
+### 93 — `slice` vs `splice` (copy vs surgery)
+
+**Concept:** Two near-twins, opposite behavior. `slice(start, end)` returns a **new** sub-array — original untouched. `splice(start, deleteCount, ...items)` **mutates** the original — removes/inserts/replaces in place and returns the removed items.
+
+**Why:** Mixing them up is the #1 cause of "why did my test data change?" bugs. Memorise: **slice = safe copy, splice = surgery**.
+
+**Q&A — why use this?**
+- **Q: Which one mutates?** A: `splice` mutates. `slice` does not — it always returns a new array.
+- **Q: How do I copy an entire array?** A: `arr.slice()` (no args) or `[...arr]`. Both return shallow copies.
+- **Q: Does `slice` accept negative indices?** A: Yes — `arr.slice(-2)` returns the last two items. `splice` also accepts negative `start`.
+
+```mermaid
+flowchart LR
+    O["arr = [10,20,30,40,50]"] --> S1[slice&#40;1, 4&#41;]
+    S1 --> R1["returns [20,30,40]"]
+    R1 --> U1["arr unchanged ✅"]
+
+    O --> S2[splice&#40;1, 2&#41;]
+    S2 --> R2["returns [20,30]"]
+    R2 --> U2["arr = [10,40,50] ⚠️ mutated"]
+    style U1 fill:#e8f5e9,stroke:#2e7d32
+    style U2 fill:#ffebee,stroke:#c62828
+```
+
+```js
+// 93_Array_Slicing.js
+let arr = [10, 20, 30, 40, 50];
+
+// slice — non-destructive copy
+let s = arr.slice(1, 4);          // [20, 30, 40]
+console.log(arr);                 // [10, 20, 30, 40, 50]   ← unchanged
+
+// splice — destructive in-place edit
+let removed = arr.splice(1, 2);   // remove 2 from index 1
+console.log(removed);             // [20, 30]
+console.log(arr);                 // [10, 40, 50]           ← mutated
+```
+
+| | `slice(start, end)` | `splice(start, deleteCount, ...items)` |
+|:--|:--|:--|
+| Mutates original? | ❌ No | ✅ Yes |
+| Returns | New sub-array | Removed elements |
+| `end` index | Exclusive | n/a (uses `deleteCount`) |
+| Can insert? | ❌ | ✅ |
+| Memory hook | **s**afe | **s**urgery |
+
+---
+
+### 94 — Combining Arrays (`concat`, spread, `join`)
+
+**Concept:** Three ways to combine. `arr1.concat(arr2)` returns a new array with both joined. Spread `[...a, ...b]` is the modern equivalent (cleaner, works with more than two arrays inline). `arr.join(sep)` collapses an array into a single string with a separator.
+
+**Why:** Combining is everywhere — merging API responses, building test data sets, formatting log lines. Pick `concat` for plain joins, spread when you also want to inject literals (`[0, ...arr, 99]`), `join` when the final output should be a string.
+
+**Q&A — why use this?**
+- **Q: What does `a + b` do for arrays?** A: Coerces both to strings and concatenates — `[1,2] + [3,4]` → `"1,23,4"`. Always use `concat` or spread for arrays.
+- **Q: `concat` vs spread — which to use?** A: Functionally equivalent for simple cases. Spread is more flexible (lets you inject literals between arrays), `concat` is slightly faster for very large arrays.
+- **Q: What's `join` good for?** A: Building CSV rows, pipe-separated logs, URL query strings. Default separator is `,`.
+
+```mermaid
+flowchart LR
+    A["a = [1,2]"] --> M[Combine]
+    B["b = [3,4]"] --> M
+    M --> C["a.concat(b)"] --> R1["[1,2,3,4]"]
+    M --> S["[...a, ...b]"] --> R2["[1,2,3,4]"]
+    arr["['pass','fail','skip']"] --> J["join('|')"]
+    J --> R3["'pass|fail|skip'"]
+    style R3 fill:#e3f2fd,stroke:#01579b
+```
+
+```js
+// 94_Concat_array.js
+let a = [1, 2];
+let b = [3, 4];
+
+let c = a.concat(b);              // [1, 2, 3, 4]    ← method form
+let d = [...a, ...b];             // [1, 2, 3, 4]    ← spread form
+let e = [0, ...a, 99, ...b];      // [0, 1, 2, 99, 3, 4]  ← spread + literals
+
+let s = ["pass", "fail", "skip"].join("|");
+console.log(s);                   // "pass|fail|skip"
+```
+
+---
+
+### 95 — Checking Arrays (`isArray`, `every`, `some`)
+
+**Concept:** `Array.isArray(x)` returns `true` only if `x` is an array (avoids the `typeof []` → `"object"` trap). `every(fn)` returns `true` if **all** elements pass the predicate. `some(fn)` returns `true` if **at least one** element passes.
+
+**Why:** Guarding test inputs (`Array.isArray(results)` before `.map`), batch assertions (`statusCodes.every(c => c < 400)`), early-exit checks (`results.some(r => r.status === "fail")` → know there's at least one failure).
+
+**Q&A — why use this?**
+- **Q: Why not just `typeof arr === "array"`?** A: That doesn't exist. `typeof []` returns `"object"`. `Array.isArray` is the only reliable check.
+- **Q: What does `every` return on an empty array?** A: `true` (vacuously). `some` on an empty array returns `false`. Useful identity but a classic gotcha.
+- **Q: When do I reach for `every` in test code?** A: "All API responses returned 2xx", "all rows in a table contain the expected text", "all elements are visible" — single boolean for an entire batch assertion.
+
+```mermaid
+flowchart TB
+    A["[80, 90, 85]"] --> E1["every(s => s >= 70)"]
+    E1 --> T1[true ✅ — all pass]
+
+    B["[80, 60, 85]"] --> E2["every(s => s >= 70)"]
+    E2 --> F1[false ❌ — 60 fails]
+
+    B --> S1["some(s => s < 70)"]
+    S1 --> T2[true ✅ — 60 matches]
+    style T1 fill:#e8f5e9,stroke:#2e7d32
+    style F1 fill:#ffebee,stroke:#c62828
+    style T2 fill:#e8f5e9,stroke:#2e7d32
+```
+
+```js
+// 95_Array_Checking.js
+Array.isArray([1, 2, 3]);                 // true
+Array.isArray("a");                       // false
+
+// every — ALL must pass
+[80, 90, 85].every(s => s >= 70);         // true
+[80, 60, 85].every(s => s >= 70);         // false  ← 60 breaks the rule
+
+// some — AT LEAST ONE must pass
+[80, 60, 85].some(s => s < 70);           // true   ← 60 matches
+[80, 90, 85].some(s => s < 70);           // false  ← none match
+
+// Real Playwright pattern
+[200, 201, 203].every(c => c >= 200 && c < 300);   // true → all 2xx
+```
+
+| Method | Returns | Empty array |
+|:--|:--|:--:|
+| `Array.isArray(x)` | `true` if array | — |
+| `arr.every(fn)` | `true` if **all** pass | `true` (vacuous) |
+| `arr.some(fn)` | `true` if **any** pass | `false` |
+
+---
+
+## 📖 What's in Chapter 12 — Functions (Available Now)
+
+### Files
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `96_Functions.js` | Define + call | Two-step pattern — define the function, then call it with `()` |
+| `97_Type1_Fn_Basic_Functions.js` | Type 1 — no params, no return | What gets returned when you don't `return` (spoiler: `undefined`) |
+| `98_Type2_Fn_With_Param_No_Return.js` | Type 2 — params, no return | Parameters vs arguments; missing return → `undefined` |
+| `99_Type3_Fn_without_Param_Return_Type.js` | Type 3 — no params, with return | `return` sends a value back to the caller |
+| `100_Type4_Fn_With_Param_With_Return.js` | Type 4 — params + return | The standard form — input → process → output |
+| `101_Template_literal.js` | Return template literal | Build dynamic strings with `` `${name}` `` and return them |
+| `102_Fn_Expression.js` | Function expression | Anonymous function assigned to a `const`; differs from declaration in hoisting |
+| `103_Arrow_Fn.js` | Arrow function (ES6) | Concise form — drop `function`, drop `{}` and `return` for single expressions |
+| `104_Arrow_Fn_REAL.js` | All three forms side-by-side | `validateStatusCode` as normal fn, expression, and arrow — pick the right tool |
+| `105_IIFE.js` | IIFE | `(function(){...})()` — defines and runs immediately; classic test-setup pattern |
+| `106_Default_Param_Fn.js` | Default parameters | `function retry(name, max = 3)` — fallback when arg is `undefined` |
+| `107_IQ.js` | Param + return IQ | Format a test result string with template literals |
+| `108_Rest_Param_Fn.js` | Rest parameters | `...results` collects all extra args into a single array |
+| `109_IQ.js` | TDZ trap with `const` expression | Calling `sayHi(...)` before its `const` declaration → ReferenceError |
+| `110_Spead_IQ.js` | Spread at call-site + rest at definition | `add(...nums)` explodes; `function(...codes)` collects |
+| `111_Scope._Fn.js` | Scope basics | Global vs local — function can read globals; outside cannot read locals |
+| `112_IQ.js` | Nested scope IQ | Inner function variables are invisible from the outer function's body |
+| `113_Closure.js` | Closure introduction | Returned inner function still remembers `outer`'s variables after `outer` exits |
+| `114_Closure.js` | Closure-backed counter | Private state via closure — `increment`, `decrement`, `get` share one hidden `count` |
+| `115_API_REAL_Closure.js` | Real-world closure | Per-test retry tracker — each call to `makeRetryTracker(3)` gets its own `attempts` |
+| `116_Higher_Order_Fn.js` | Higher-Order Functions | Functions that take a function as an argument (or return one) |
+| `117_Pure_Fn.js` | Pure functions | Same input → same output, no side effects — easy to test |
+
+### Key Concepts
+
+```mermaid
+mindmap
+  root((Chapter 12 — Functions))
+    Why functions
+      reuse code
+      hide complexity
+      name an operation
+    Four types
+      no param + no return
+      param + no return
+      no param + return
+      param + return
+    Parts
+      parameter (definition)
+      argument (call)
+      return value
+    Forms
+      declaration function name&#40;&#41;
+      expression const x = function&#40;&#41;
+      arrow const x = &#40;&#41; =>
+      IIFE &#40;function&#40;&#41;{}&#41;&#40;&#41;
+    Return
+      explicit value
+      missing = undefined
+      stops execution
+    console.log vs return
+      log = print for humans
+      return = value for code
+    Params
+      default name = "Guest"
+      rest ...args
+      spread fn&#40;...arr&#41;
+    Scope
+      global
+      local
+      nested
+    Closure
+      inner remembers outer
+      private state
+      retry tracker
+    Higher-order
+      takes a function
+      returns a function
+    Pure
+      same in → same out
+      no side effects
+```
+
+### Run them
+
+```bash
+node chapter_12_Funtions/96_Functions.js                       # → "Hi, how are you?"
+node chapter_12_Funtions/97_Type1_Fn_Basic_Functions.js        # → "Hi" + undefined
+node chapter_12_Funtions/98_Type2_Fn_With_Param_No_Return.js   # → "Hi Pramod" + undefined
+node chapter_12_Funtions/99_Type3_Fn_without_Param_Return_Type.js # → "Hi" then "Hello"
+node chapter_12_Funtions/100_Type4_Fn_With_Param_With_Return.js   # → 9
+node chapter_12_Funtions/101_Template_literal.js               # → "Hello, Alice"
+node chapter_12_Funtions/102_Fn_Expression.js                  # → "Hello, Pramod"
+node chapter_12_Funtions/103_Arrow_Fn.js                       # → 20, then "Dutta"
+node chapter_12_Funtions/104_Arrow_Fn_REAL.js                  # → validateStatusCode in 3 forms
+node chapter_12_Funtions/105_IIFE.js                           # → IIFE bodies run on definition
+node chapter_12_Funtions/106_Default_Param_Fn.js               # → default param fallback
+node chapter_12_Funtions/107_IQ.js                             # → "Login: pass (320ms)"
+node chapter_12_Funtions/108_Rest_Param_Fn.js                  # → rest collects extras into array
+node chapter_12_Funtions/109_IQ.js                             # → ReferenceError (TDZ on const fn)
+node chapter_12_Funtions/110_Spead_IQ.js                       # → spread + rest combined
+node chapter_12_Funtions/111_Scope._Fn.js                      # → global readable, local hidden
+node chapter_12_Funtions/112_IQ.js                             # → ReferenceError on inner var
+node chapter_12_Funtions/113_Closure.js                        # → inner remembers message
+node chapter_12_Funtions/114_Closure.js                        # → counter using closure
+node chapter_12_Funtions/115_API_REAL_Closure.js               # → retry tracker per test
+node chapter_12_Funtions/116_Higher_Order_Fn.js                # → fn passed as argument
+node chapter_12_Funtions/117_Pure_Fn.js                        # → pure vs impure demonstration
+```
+
+---
+
+### 96 — Functions: Define + Call
+
+**Concept:** A function is a reusable block of code with a name. Two steps: **define** it (`function greet() { … }`), then **call** it (`greet()`). Defining alone runs nothing — the body only executes when the function is called.
+
+**Why:** Without functions you'd copy-paste logic everywhere. With functions you give a block a name, call it from anywhere, and change it in one place — the foundation of every test framework (Playwright fixtures, helpers, page objects).
+
+**Q&A — why use this?**
+- **Q: What happens if I define but never call?** A: Nothing runs. The function sits in memory, ready, but until you write `greet()` the body is dormant.
+- **Q: Do parentheses matter?** A: Yes. `greet` is the function **reference**; `greet()` **invokes** it. `console.log(greet)` prints the function body; `console.log(greet())` prints the return value.
+- **Q: Can I call before define?** A: Function **declarations** are hoisted, so yes. Function **expressions** (Type 102) are not — call before define throws.
+
+```mermaid
+sequenceDiagram
+    participant Code
+    participant Memory
+    participant Output
+    Code->>Memory: define greet()
+    Note over Memory: function stored, not executed
+    Code->>Memory: call greet()
+    Memory->>Output: "Hi, how are you?"
+```
+
+```js
+// 96_Functions.js
+function greet() {                    // Step 1 — define
+    console.log("Hi, how are you?");
+}
+
+greet();                              // Step 2 — call → prints "Hi, how are you?"
+```
+
+---
+
+### 97–100 — The Four Types of Functions
+
+**Concept:** Every JavaScript function is one of four shapes — combinations of "takes parameters?" × "returns a value?". Knowing the four shapes lets you read any function at a glance.
+
+**Why:** When you write helpers, fixtures, or page-object methods, picking the right shape (especially "return vs no return") prevents the most common bug — calling a void function and trying to use its `undefined` result.
+
+**Q&A — why use this?**
+- **Q: What does Type 1 (no params, no return) return?** A: `undefined`. JS implicitly returns `undefined` if you don't `return` anything. `let a = greet()` makes `a === undefined`.
+- **Q: When is Type 4 (params + return) the right choice?** A: Almost always. Input → process → output is the cleanest, most testable shape. Pure functions of this form are easiest to unit-test.
+- **Q: Can a function `return` without a value?** A: Yes — `return;` exits early and returns `undefined`. Useful as a guard (`if (!input) return;`).
+
+```mermaid
+flowchart TB
+    subgraph T1["Type 1 — Void"]
+        A1["function f() { ... }"]
+        A1 --> R1["returns undefined"]
+    end
+    subgraph T2["Type 2 — Params, no return"]
+        A2["function f(x) { ... }"]
+        A2 --> R2["returns undefined"]
+    end
+    subgraph T3["Type 3 — No params, returns"]
+        A3["function f() { return val; }"]
+        A3 --> R3["returns val ✅"]
+    end
+    subgraph T4["Type 4 — Standard"]
+        A4["function f(x) { return val; }"]
+        A4 --> R4["returns val ✅"]
+    end
+    style R4 fill:#e8f5e9,stroke:#2e7d32
+    style R3 fill:#e8f5e9,stroke:#2e7d32
+    style R1 fill:#fff3e0,stroke:#e65100
+    style R2 fill:#fff3e0,stroke:#e65100
+```
+
+```js
+// 97 — Type 1 (no params, no return)
+function greet() { console.log("Hi"); }
+let a = greet();              // prints "Hi", a === undefined
+
+// 98 — Type 2 (param, no return)
+function greetByName(name) { console.log("Hi", name); }
+let r = greetByName("Pramod"); // prints "Hi Pramod", r === undefined
+
+// 99 — Type 3 (no params, return)
+function goToRelativeHouse() { return "Hello"; }
+let relative = goToRelativeHouse();   // relative === "Hello"
+
+// 100 — Type 4 (params + return) — the standard form
+function sumOfTwoNumber(a, b) { return a + b; }
+let c = sumOfTwoNumber(4, 5);         // c === 9
+```
+
+| Type | Has params? | Returns? | `let x = fn(...)` gives |
+|:----:|:----------:|:--------:|:-----------------------:|
+| 1 | ❌ | ❌ | `undefined` |
+| 2 | ✅ | ❌ | `undefined` |
+| 3 | ❌ | ✅ | the returned value |
+| 4 | ✅ | ✅ | the returned value |
+
+**Key rule:** `console.log` ≠ `return`. `console.log` *prints* (for humans); `return` *sends* a value back (for code).
+
+---
+
+### 101 — Return a Template Literal
+
+**Concept:** A function can return anything — number, string, array, object, even another function. Returning a template literal `` `Hello, ${name}` `` lets you build dynamic strings cleanly inside the function and hand them back to the caller.
+
+**Why:** Test code constantly builds dynamic strings — selector paths, log lines, screenshot filenames. Returning a template literal keeps the formatting logic next to the data that builds it.
+
+```js
+// 101_Template_literal.js
+function greet(name) {
+    return `Hello, ${name}`;          // interpolation inside return
+}
+let result = greet("Alice");
+console.log(result);                  // "Hello, Alice"
+```
+
+---
+
+### 102 — Function Expression vs Declaration
+
+**Concept:** A **function declaration** has a name and stands alone (`function greet() {}`). A **function expression** is an anonymous (or named) function **assigned** to a variable (`const greet = function() {}`). Declarations are fully hoisted; expressions are not.
+
+**Why:** Expressions let you treat functions as values — pass them as callbacks, store them in arrays/objects, return them from other functions. This is the gateway to higher-order functions, callbacks, and modern JS.
+
+**Q&A — why use this?**
+- **Q: Functionally identical?** A: Almost — both work the same when *called*. The difference: declarations are hoisted (callable before they appear in code); expressions are not (`TypeError` if called early).
+- **Q: When should I prefer expressions?** A: When the function is a value you pass around (event handlers, callbacks, array methods like `.map(fn)`). Declarations are nicer for top-level named utilities.
+- **Q: Why `const`, not `let`?** A: You almost never want to reassign a function binding. `const` signals intent and catches accidental overwrites.
+
+```mermaid
+flowchart LR
+    D["function greet() {}"] --> H1[hoisted ✅]
+    H1 --> CallEarly1["greet() before line works"]
+
+    E["const greet = function() {}"] --> H2[not hoisted ❌]
+    H2 --> CallEarly2["greet() before line → TypeError"]
+    style H1 fill:#e8f5e9,stroke:#2e7d32
+    style H2 fill:#ffebee,stroke:#c62828
+```
+
+```js
+// 102_Fn_Expression.js
+// Declaration
+function greet1(name) {
+    return `Hello, ${name}!`;
+}
+
+// Expression — anonymous function assigned to const
+const greet2 = function (name) {
+    return `Hello, ${name}!`;
+};
+
+console.log(greet1("Bob"));   // "Hello, Bob!"
+console.log(greet2("Bob"));   // "Hello, Bob!"
+```
+
+| | Declaration | Expression |
+|:--|:--|:--|
+| Syntax | `function f() {}` | `const f = function() {}` |
+| Hoisted | ✅ Fully | ❌ Only the `const` binding (TDZ) |
+| Use case | Top-level helpers | Callbacks, values, methods on objects |
+
+---
+
+### 103 — Arrow Functions (ES6)
+
+**Concept:** Arrow functions are a shorter syntax for function expressions. Three transformations: drop `function`, add `=>` between params and body, **and** for a single-expression body you can drop `{}` and `return` (implicit return).
+
+**Why:** Cleaner callbacks (`arr.map(x => x * 2)`), tighter Playwright assertions (`page.locator(...).filter({ has: el => ... })`), and lexical `this` (which doesn't matter yet, but will once you hit OOP). Arrows are everywhere in modern JS.
+
+**Q&A — why use this?**
+- **Q: Are they completely identical to function expressions?** A: For value/return behavior, yes. They differ in: **no own `this`** (inherit from surrounding scope), **no `arguments` object**, **cannot be used as constructors** (`new ArrowFn()` throws).
+- **Q: When do I lose the implicit return?** A: Whenever you use `{}` for the body. `const f = x => { x * 2 }` returns `undefined` because the body is a statement block with no `return`.
+- **Q: One parameter — do I need parens?** A: No — `x => x * 2` is valid. Zero or two+ params require parens: `() => 42`, `(a, b) => a + b`.
+
+```mermaid
+flowchart LR
+    F["function (x) { return x * 2; }"] --> D1[drop function]
+    D1 --> D2["(x) => { return x * 2; }"]
+    D2 --> D3[single expr → drop braces + return]
+    D3 --> A["x => x * 2 ✅"]
+    style A fill:#e8f5e9,stroke:#2e7d32
+```
+
+```js
+// 103_Arrow_Fn.js
+const doubleIt = n => n * 2;          // implicit return
+console.log(doubleIt(10));            // 20
+
+const printIt = name => console.log(name);  // side-effect arrow
+printIt("Dutta");                     // "Dutta"
+
+// Multiple params + multi-line body
+const add = (a, b) => {
+    const sum = a + b;
+    return sum;
+};
+console.log(add(4, 5));               // 9
+```
+
+| Form | Example | When |
+|:--|:--|:--|
+| One param, implicit return | `x => x * 2` | Pure transforms (`map`, `filter`) |
+| Multiple params | `(a, b) => a + b` | Two+ inputs |
+| Block body | `x => { ...; return v }` | Multi-statement logic |
+| Side effect | `x => console.log(x)` | `forEach` callbacks |
+
+**Quick conversion checklist:** drop `function` → add `=>` → if single expression, drop `{}` and `return` → if exactly one param, drop parens (optional).
+
+---
+
+### 104 — Normal vs Expression vs Arrow (side-by-side)
+
+**Concept:** Same job (`validateStatusCode`) written three ways. All three behave identically when called. The differences live in hoisting, `this` binding, naming, and `new`-ability — invisible until you trip over them.
+
+**Why:** Real test code mixes all three. You'll see normal functions for top-level helpers, expressions for conditional assignment, and arrows in callbacks (`arr.map(...)`, `await page.locator(...).filter(el => ...)`). Recognising each at a glance is a daily skill.
+
+```js
+// 104_Arrow_Fn_REAL.js
+function validateStatusCode(status) {                        // normal
+    if (status >= 200 && status <= 300) console.log("Request is fine!");
+}
+
+const validateStatusCode_Exp = function (status) {           // expression
+    if (status >= 200 && status <= 300) console.log("Request is fine!");
+};
+
+const validateStatusCode_Arrow = (status) => {               // arrow
+    if (status >= 200 && status <= 300) console.log("Request is fine!");
+};
+```
+
+| Feature | Normal | Expression | Arrow |
+|:--|:--:|:--:|:--:|
+| Keyword `function` | ✅ | ✅ | ❌ |
+| Hoisted | ✅ Fully | ❌ TDZ | ❌ TDZ |
+| Own `this` | ✅ | ✅ | ❌ inherits from outer |
+| Own `arguments` object | ✅ | ✅ | ❌ use `...args` |
+| Usable with `new` | ✅ | ✅ | ❌ TypeError |
+| Implicit return (one-liner) | ❌ | ❌ | ✅ `x => x * 2` |
+| Best for | Top-level helpers | Conditional assignment | Callbacks, `map/filter` |
+
+**Rule of thumb:** methods on objects → normal/expression (need own `this`). Callbacks, transforms → arrow.
+
+---
+
+### 105 — IIFE (Immediately Invoked Function Expression)
+
+**Concept:** A function that **defines and runs in the same line**: `(function () { ... })()`. The outer parens turn the declaration into an expression; the trailing `()` invokes it. Body runs once, then the function vanishes — no name to call again.
+
+**Why:** Classic pattern for **one-shot setup** — config bootstrap, test environment init, isolating temporary variables from the global scope. In modern code, modules and block scope cover most uses, but IIFEs still show up in setup files and older codebases.
+
+**Q&A — why use this?**
+- **Q: Why the wrapping parens?** A: `function () {}` at the start of a line is parsed as a **declaration** (needs a name). `(function () {})` forces JS to read it as an **expression**, which can then be called with `()`.
+- **Q: Can I use an arrow IIFE?** A: Yes — `(() => { ... })()`. Same effect, less typing.
+- **Q: Do they still matter post-ES6?** A: Less so — `let`/`const` give block scope and modules give true isolation. But you'll still hit IIFEs in setup scripts, polyfills, and bundled code.
+
+```mermaid
+flowchart LR
+    A["(function() {})"] --> B["Wrap in parens<br/>→ expression"]
+    B --> C["Trailing ()"]
+    C --> D[run immediately]
+    D --> E[body executes once]
+    E --> F[no reference, GC'd]
+    style D fill:#e8f5e9,stroke:#2e7d32
+```
+
+```js
+// 105_IIFE.js
+(function () {
+    console.log("Hi");           // runs once on script load
+})();
+
+(() => {
+    console.log("Setup complete"); // arrow IIFE — same effect
+})();
+```
+
+---
+
+### 106 — Default Parameters
+
+**Concept:** Give a parameter a fallback value with `=`: `function retry(name, max = 3)`. If the argument is `undefined` (omitted or explicitly `undefined`), the default kicks in.
+
+**Why:** Avoid the old `max = max || 3` trick which breaks for `0`/`""`/`false`. Defaults make optional config readable and safe.
+
+**Q&A — why use this?**
+- **Q: What triggers the default?** A: Only `undefined` (or omitted arg). Passing `null` does **not** trigger it — `null` is a valid value.
+- **Q: Can a default reference an earlier param?** A: Yes — `function f(a, b = a * 2)`. Evaluated at call time.
+- **Q: Can a default be a function call?** A: Yes — `function f(id = generateId())`. Runs only when the default is needed.
+
+```js
+// 106_Default_Param_Fn.js
+function retry(testName, maxRetries = 3, delay = 1000) {
+    console.log(`Retrying ${testName} up to ${maxRetries} times, ${delay}ms apart`);
+}
+
+retry("Login Test");                       // max=3, delay=1000 (defaults)
+retry("Registeration Test", 5, 2000);      // max=5, delay=2000 (overrides)
+```
+
+| Call | `maxRetries` | `delay` |
+|:--|:--:|:--:|
+| `retry("X")` | 3 | 1000 |
+| `retry("X", 5)` | 5 | 1000 |
+| `retry("X", 5, 2000)` | 5 | 2000 |
+| `retry("X", undefined, 2000)` | 3 | 2000 |
+| `retry("X", null, 2000)` | `null` ⚠️ | 2000 |
+
+---
+
+### 108 — Rest Parameters `...args`
+
+**Concept:** Prefix the **last** parameter with `...` to collect every remaining argument into a real array: `function log(suite, ...results)`. Inside, `results` is a normal array — `.map`, `.filter`, `.length` all work.
+
+**Why:** Builds functions that accept a variable number of arguments — log helpers, validators, batch assertions. Cleaner than the legacy `arguments` object (which isn't a real array and doesn't exist in arrow functions).
+
+**Q&A — why use this?**
+- **Q: Rest vs `arguments`?** A: `arguments` is array-like, not an array; not available in arrow functions; includes **all** args. Rest is a real array, works in arrows, holds only what you didn't name.
+- **Q: Can I have rest in the middle?** A: No. Rest must be **last**. `function f(...a, b)` → SyntaxError.
+- **Q: Can a function have just one rest param?** A: Yes — `function sum(...nums)`. Same as `function sum() { const nums = [...arguments]; }` but cleaner and works in arrows.
+
+```js
+// 108_Rest_Param_Fn.js
+function logResult(suiteName, ...results) {
+    console.log(suiteName);                // "Login Test"
+    console.log(results);                  // [1, 2, 3]
+}
+
+logResult('Login Test', 1, 2, 3);
+logResult('Reg Test', "Hello", "Pramod");  // results = ["Hello", "Pramod"]
+```
+
+---
+
+### 110 — Spread at the Call Site
+
+**Concept:** Spread `...arr` at a **call site** explodes an array into individual arguments. Rest `...args` at a **definition** collects them. Same syntax, opposite directions.
+
+**Why:** Forward an array of values into a function that expects discrete args (`Math.max(...nums)`), build wrapper functions that pass through arguments (`logger(...args)`), or combine arrays inline (covered in Ch11).
+
+```js
+// 110_Spead_IQ.js
+function add(a, b, c) { return a + b + c; }
+let num = [1, 2, 3];
+add(...num);                          // 6  ← spread explodes to add(1, 2, 3)
+
+let responseCodes = [200, 201, 404];
+function hasError(...codes) {         // ← rest collects
+    return codes.some(c => c >= 400);
+}
+hasError(...responseCodes);           // true ← spread + rest combined
+```
+
+| | Spread `...arr` | Rest `...args` |
+|:--|:--|:--|
+| Lives at | **Call site** | **Definition** |
+| Direction | Array → loose args | Loose args → array |
+| Example | `f(...nums)` | `function f(...nums)` |
+
+---
+
+### 111–112 — Scope (Global vs Local vs Nested)
+
+**Concept:** A variable declared with `let`/`const` is visible only inside the block it was declared in. Functions create their own scope. **Inner** scopes can read **outer** scopes; outer cannot peek into inner.
+
+**Why:** "Why is `x` undefined here?" is almost always a scope question. Knowing the boundaries prevents global pollution, name collisions, and the classic "I can't access the variable" bug.
+
+```mermaid
+flowchart TB
+    G["Global: env"] --> F1["function setupConfig"]
+    F1 -.read.-> G
+    F1 --> L["Local: timeout"]
+    G -.❌ cannot read.-> L
+    style L fill:#fff3e0,stroke:#e65100
+```
+
+```js
+// 111_Scope._Fn.js
+let env = "staging";              // global
+
+function setupConfig() {
+    let timeout = 3000;           // local to setupConfig
+    console.log(env);             // ✅ "staging"
+    console.log(timeout);         // ✅ 3000
+}
+
+setupConfig();
+console.log(env);                 // ✅ "staging"
+console.log(timeout);             // ❌ ReferenceError — local hidden
+
+// 112_IQ.js — nested
+function outer() {
+    let x = 10;
+    function inner() {
+        let y = 20;
+        console.log(x);           // ✅ outer's x — chain lookup
+    }
+    inner();
+    console.log(y);               // ❌ ReferenceError — y is inner's local
+}
+```
+
+| From where | Can see global? | Can see outer local? | Can see inner local? |
+|:--|:--:|:--:|:--:|
+| Global scope | ✅ | ❌ | ❌ |
+| Outer function | ✅ | ✅ own | ❌ |
+| Inner function | ✅ | ✅ chain lookup | ✅ own |
+
+---
+
+### 113–115 — Closures
+
+**Concept:** A **closure** is a function that **remembers** the variables from the scope where it was created — even after that outer scope has finished running. The returned inner function carries the outer locals with it, like a backpack.
+
+**Why:** Closures are the foundation of **private state** in JS — counters, retry trackers, rate limiters, fixtures that hold state between calls. Every fixture system (including Playwright's) uses closures under the hood.
+
+**Q&A — why use this?**
+- **Q: Where is `message` after `outer()` returns?** A: Normally it would be garbage-collected. But because `inner` references it, the engine keeps it alive — that's the closure.
+- **Q: Each call to `makeRetryTracker(3)` — fresh state or shared?** A: Fresh. Each call creates a new `attempts` variable. Two trackers, two independent counters.
+- **Q: Why not just use a global?** A: Globals leak, collide, and can't be reset per-test. Closures give one isolated counter per fixture/test — exactly what you need.
+
+```mermaid
+flowchart LR
+    O["outer()"] --> M["let message = 'hello'"]
+    O --> I["inner() reads message"]
+    O --> R[return inner]
+    R --> Caller[caller holds inner]
+    Caller --> Call["inner() called later"]
+    Call --> Mem["message still alive ✅"]
+    style Mem fill:#e8f5e9,stroke:#2e7d32
+```
+
+```js
+// 113_Closure.js — the simplest closure
+function outer() {
+    let message = "hello";
+    function inner() {
+        console.log(message);     // ← reads outer's variable
+    }
+    return inner;                  // outer ends, but message lives on via inner
+}
+let fn_inner = outer();
+fn_inner();                       // "hello" — message still accessible
+
+// 114_Closure.js — private state with a counter
+function makeCounter(start = 0) {
+    let count = start;             // hidden, no outside access
+    return {
+        increment() { count++; },
+        decrement() { count--; },
+        get()       { return count; }
+    };
+}
+let counter = makeCounter(0);
+counter.increment();
+counter.increment();
+counter.increment();
+console.log(counter.get());       // 3
+counter.decrement();
+console.log(counter.get());       // 2
+
+// 115_API_REAL_Closure.js — per-test retry tracker
+function makeRetryTracker(max) {
+    let attempts = 0;
+    return function tryAgain(testName) {
+        attempts++;
+        if (attempts > max) return `${testName} exceeded max retries (${max})`;
+        return `Attempt ${attempts}/${max} for ${testName}`;
+    };
+}
+let retry = makeRetryTracker(3);
+console.log(retry("Login"));      // "Attempt 1/3 for Login"
+console.log(retry("Login"));      // "Attempt 2/3 for Login"
+console.log(retry("Login"));      // "Attempt 3/3 for Login"
+console.log(retry("Login"));      // "Login exceeded max retries (3)"
+```
+
+| Pattern | How closure helps |
+|:--|:--|
+| Counter | Hides `count` from outside, only methods can touch it |
+| Retry tracker | Each tracker gets its own `attempts` — no shared state |
+| Rate limiter | Stores `lastCall` timestamp privately between calls |
+| Memoization | Caches results in a closed-over `Map` |
+
+**Mental model:** the inner function carries a **backpack** of variables it referenced from outside. Even when the outer scope is gone, the backpack stays.
+
+---
+
+### 116 — Higher-Order Functions
+
+**Concept:** A function is **higher-order** if it does at least one of: (1) takes a function as an argument, (2) returns a function. Array methods like `map`, `filter`, `reduce` are all higher-order — they take a function and call it for you.
+
+**Why:** Higher-order functions are how you build flexible, reusable test plumbing — wrappers that add logging, timing, retry logic; framework hooks that accept user callbacks; matchers and assertions.
+
+```js
+// 116_Higher_Order_Fn.js
+function runWithLogging(testFn, testName) {
+    console.log(`Starting ${testName}`);
+    let result = testFn();              // call the function passed in
+    console.log(`${testName} → ${result}`);
+    return result;
+}
+
+function loginTest()       { return "pass"; }
+function loginTestFAILED() { return "fail"; }
+
+runWithLogging(loginTest, "Login Test");                  // pass
+runWithLogging(loginTestFAILED, "Dashboard Failed Test"); // fail
+```
+
+**Patterns you've already seen:**
+
+| HOF | What it does |
+|:--|:--|
+| `arr.map(fn)` | Takes a function, calls it for each element |
+| `arr.filter(fn)` | Takes a predicate, returns matching elements |
+| `arr.reduce(fn, init)` | Takes a reducer, accumulates a value |
+| `setTimeout(fn, ms)` | Takes a function, runs it later |
+| `makeRetryTracker(max)` | **Returns** a function (closure example) |
+
+**Rule of thumb:** if you can describe a chunk of logic as "do X around Y", X is the higher-order wrapper and Y is the function you pass in.
+
+---
+
+### 117 — Pure Functions
+
+**Concept:** A function is **pure** if (1) same input always produces the same output, and (2) it has no side effects (doesn't read or change anything outside its parameters). Like a calculator — `2 + 3` always returns `5`, no matter when or where.
+
+**Why:** Pure functions are the easiest code to test, refactor, parallelize, and reason about. No mocks needed, no setup, no order dependencies — just `expect(fn(input)).toBe(output)`. The more of your test helpers are pure, the more trustworthy your suite gets.
+
+**Q&A — why use this?**
+- **Q: What counts as a side effect?** A: Reading/writing globals, mutating arguments, printing to console, calling APIs, throwing on conditions outside the inputs.
+- **Q: Can a pure function call another function?** A: Only if the inner one is also pure. One impure call infects the whole chain.
+- **Q: Are SDET tests usually pure?** A: No — they click, type, screenshot (all side effects). But helpers (data builders, formatters, assertions) should be pure. Keep impure work at the edges.
+
+```mermaid
+flowchart LR
+    subgraph Pure["✅ Pure"]
+        I1[input] --> F1[pure fn]
+        F1 --> O1[output]
+        note1[no globals<br/>no mutation<br/>no console] -.-> F1
+    end
+    subgraph Impure["❌ Impure"]
+        I2[input] --> F2[impure fn]
+        G[global threshold] --> F2
+        F2 --> O2[output]
+        F2 --> Side[mutates / logs / API]
+    end
+    style F1 fill:#e8f5e9,stroke:#2e7d32
+    style F2 fill:#ffebee,stroke:#c62828
+```
+
+```js
+// 117_Pure_Fn.js
+
+// ✅ Pure — same input → same output, no side effect
+function calculatePassRate(total, passed) {
+    return ((passed / total) * 100).toFixed(2);
+}
+calculatePassRate(10, 7);   // "70.00"
+calculatePassRate(10, 7);   // "70.00"  ← same forever
+
+// ❌ Impure — depends on external state
+let threshold = 70;
+function isPassing(score) {
+    return score >= threshold;   // peeks at outer threshold
+}
+isPassing(70);              // true
+threshold = 90;
+isPassing(70);              // false ← same input, different answer
+```
+
+| Trait | Pure ✅ | Impure ❌ |
+|:--|:-:|:-:|
+| Same input → same output | ✅ | ❌ |
+| Reads globals | ❌ | ✅ |
+| Mutates inputs | ❌ | ✅ |
+| Prints / writes / calls API | ❌ | ✅ |
+| Easy to unit-test | ✅ | ❌ |
+| Safe to parallelize | ✅ | ❌ |
+
+**Takeaway:** push side effects to the edges (real browser clicks, DB writes). Keep the middle (data transforms, calculations, formatters) pure. Your test suite will thank you.
+
 ---
 
 ## 🔭 What's Coming Next
 
 ```mermaid
 graph TD
-    subgraph next["Next Up — Arrays, Functions & More"]
-        N1[Ch 11: Arrays] --> N2[Ch 12: Functions & Strings]
-        N2 --> N3[Ch 13: Objects]
+    subgraph next["Next Up — Strings, Objects, 2D Arrays"]
+        N1[Ch 12: Functions ✅] --> N2[Ch 13: Strings]
+        N2 --> N3[Ch 14: Objects]
+        N3 --> N4[Ch 15: 2D Arrays]
     end
 
     style next fill:#fff3e0,stroke:#e65100
@@ -2021,7 +2938,10 @@ graph TD
 - ✅ Chapter 8 — **Switch Statement**: switch basics, fall-through, default, grouped cases, IQ traps (files `59`–`67`)
 - ✅ Chapter 9 — **User Input**: browser `prompt()`, Node `readline`, `prompt-sync` (files `68`–`70`)
 - ✅ Chapter 10 — **Loops**: for, while, do-while, continue, IQ traps (files `71`–`82`)
-- ✅ Chapter 11 — **Arrays**: creation, access, add/remove, splice, search, iterate, transform (files `83`–`91`)
+- ✅ Chapter 11 — **Arrays (Part 1)**: creation, access, add/remove, splice, search, iterate, transform (files `83`–`91`)
+- ✅ Chapter 11 — **Arrays (Part 2)**: sort (lexicographic trap), slice vs splice, concat/spread/join, `isArray`/`every`/`some` (files `92`–`95`)
+- ✅ Chapter 12 — **Functions (Part 1)**: define + call, four function types, parameter vs argument, template-literal returns, function expression, arrow functions (files `96`–`103`)
+- ✅ Chapter 12 — **Functions (Part 2)**: all-three forms side-by-side, IIFE, default/rest/spread params, scope, closures, higher-order functions, pure functions (files `104`–`117`)
 - ✅ **Per-chapter README** — every chapter folder now has its own deep-dive README.md
 
 ---
