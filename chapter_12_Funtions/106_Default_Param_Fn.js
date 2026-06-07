@@ -5,3 +5,4 @@ function retry(testName, maxRetries = 3, delay = 1000) {
 
 retry("Login Test");
 retry("Registeration Test", 5, 2000);
+retry();

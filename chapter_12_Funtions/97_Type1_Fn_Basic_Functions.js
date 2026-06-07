@@ -9,3 +9,5 @@ greet(); // calling argument
 
 let a = greet();
 console.log(a);
+
+

@@ -1,5 +1,5 @@
 function goToRelativeHouse() {
-    console.log('Hi');
+   // console.log('Hi');
     return "Hello";
 }
 

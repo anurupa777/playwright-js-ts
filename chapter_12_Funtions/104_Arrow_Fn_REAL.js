@@ -22,4 +22,4 @@ const validateStatusCode_Arrow = (status) => {
     }
 }
 
-validateStatusCode_Arrow();
+validateStatusCode_Arrow(202);
