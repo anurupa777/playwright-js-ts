@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Learn Playwright Batch 2x
 
 <div align="center">
