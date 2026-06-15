@@ -30,5 +30,9 @@ const data = {
     }
 };
 
-const { user: { address: { city } } } = data;
-console.log(data.user.address.city);
+const { user:
+ { address:
+ { city }
+ } } = data;
+console.log(data.user.address.city); 
+

@@ -1,13 +1,21 @@
 let obj = {};
+console.log(obj)
 let obj1 = {
     name: " Pramod",
     age: 42,
     rollNo: 123
-};
-
+}
+console.log(obj1)
 // { "name" : "Pramod"} - JSON
 
 let array = [1, 2, 3, 4];
 
-let test_Obj_ref = { name: "Pramod", age: 65, phone: 9876543210 };
+let test_Obj_ref = { name: "Pramod", age: 65, phone: 9876543210 }
+console.log(test_Obj_ref)
 
+let obj= {
+    name: "Anurupa",
+    age:38,
+    job:"no"
+}
+console.log(obj);

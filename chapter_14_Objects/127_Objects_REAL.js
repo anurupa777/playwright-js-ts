@@ -16,7 +16,9 @@ if (config.browser === "chrome") {
 
 
 let config2 = {
-    browser = "chrome",
-    timeout = 3000,
-    testname = "login test"
-};
+    browser : "chrome",
+    timeout :3000,
+    testname : "login test"
+}
+
+
