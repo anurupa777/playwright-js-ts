@@ -56,6 +56,10 @@ graph TB
             ch12_fn["Ch 12: Functions ✅"]
             ch13_str["Ch 13: Strings ✅"]
             ch14_obj["Ch 14: Objects ✅"]
+            ch15_2d["Ch 15: 2D Arrays ✅"]
+            ch16_cb["Ch 16: Callbacks ✅"]
+            ch17_pr["Ch 17: Promises ✅"]
+            ch18_aa["Ch 18: Async / Await ✅"]
         end
 
         subgraph adv["⚙️ Advanced JS (Weeks 7–8)"]
@@ -265,6 +269,46 @@ graph TB
 │   ├── 135_IQ                          # Object.keys/values/entries + for...in
 │   ├── 136_Obj_REAL.js                 # Real test config — ENV, expected response, nested objects
 │   └── 137_Let_const_obj.js            # let vs const for objects — mutate yes, reassign no
+│
+├── chapter_15_2D_Array/                ✅ 2D Arrays — grids, nested loops, real test matrices, patterns
+│   ├── 138_2D_Array.js                 # Grid literal, nested for loop, grid[i][j] access
+│   ├── 139_2d.js                       # Rows × cols, grid.length vs grid[0].length
+│   ├── 140_REAL.js                     # Test matrix — for, for-of, forEach printing (write vs log)
+│   ├── 141_2d_Array_Fn.js              # map + reduce row sums, find failed test cases
+│   ├── 142_IQ_Right_Pattern_Py.js      # IQ — right-triangle star pattern with nested loops
+│   └── testdata.csv                    # Sample CSV — username, password, expected_Result
+│
+├── chapter_16_Callback/                ✅ Callbacks — pass-a-function, sync vs async, callback hell
+│   ├── 143_Callback.js                 # Callback basics — named, anonymous, arrow forms
+│   ├── 144_CB.js                       # test('title', () => {}) — the callback you already use
+│   ├── 145_CB_Fn.js                    # cafe(item, callWhenReady) — three ways to pass a callback
+│   ├── 146_PW_CB.js                    # Mini Playwright test() — testName + callback pattern
+│   ├── 147_JS_CB.js                    # setTimeout — why Test 3 prints before Test 2
+│   ├── 148_Sync_CB.js                  # Synchronous callback — forEach runs in order, now
+│   ├── 149_Async_CB.js                 # Asynchronous callback — setTimeout defers to later
+│   ├── 150_CB_Hell.js                  # Callback hell — 4-step login nested pyramid
+│   ├── 151_CB_Hell_20_Steps.js         # Pyramid of Doom — 24-step E2E checkout, drifting right
+│   ├── 152_CB_Parameter.js             # Callback with parameters — callback(name, status)
+│   └── 153_CB_Return.js                # Callback as return driver — calculate(a,b,operation)
+│
+├── chapter_17_Promise/                 ✅ Promises — resolve/reject, then/catch/finally, chaining, all/allSettled
+│   ├── 154_Promise.js                  # new Promise(resolve, reject) — the executor, pending state
+│   ├── 155_Promise_REAL_API.js         # .then() runs only on resolve — read response.status
+│   ├── 156_Promise_REAL_API_PART2.js   # .catch() runs only on reject — .then() skipped
+│   ├── 157_Finally.js                  # .finally() always runs — cleanup regardless of outcome
+│   ├── 158_Call_Py_Problem.js          # Promise chaining — flatten callback hell into .then() steps
+│   ├── 159_Promise_ALL.js              # Promise.allSettled — every result, no stop-at-first-fail
+│   └── 160_Promise_IQ.js               # IQ — chaining, throw-in-then, all vs allSettled traps
+│
+├── chapter_18_Async_Await/             ✅ Async / Await — await a promise, try/catch/finally, seq vs parallel
+│   ├── 161_Async.js                    # async + try/catch/finally — await a rejected promise
+│   ├── 162_Aysnc_P2.js                 # await unwraps a promise — the page.goto() pattern
+│   ├── 163_PyODom.js                   # E2E login as flat awaits instead of a .then() chain
+│   ├── 164_Async_Ex.js                 # Playwright test — async ({ page }) + await expect()
+│   ├── 165_AA_Seq.js                   # Sequential awaits — step 2 depends on step 1 (~slow)
+│   ├── 165_AA_Parallel.js              # Parallel — await Promise.allSettled([...]) (~fast)
+│   ├── 166_IQ.js                       # IQ — await order, async returns a promise
+│   └── 167_ACLogin.js                  # Real PW test — test.step, loginAs, toBeHidden
 │
 └── README.md                           👋 You are here
 ```
@@ -3416,14 +3460,605 @@ for (const key in user) {
 
 ---
 
+## 📖 What's in Chapter 15 — 2D Arrays (Available Now)
+
+### Files
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `138_2D_Array.js` | Grid basics | Array-of-arrays literal, nested `for`, `grid[i][j]` access |
+| `139_2d.js` | Rows × columns | `1x4` shape, `grid.length` (rows) vs `grid[0].length` (cols) |
+| `140_REAL.js` | Test matrix | Walk a results matrix 3 ways — `for`, `for...of`, `forEach`; `write` vs `log` |
+| `141_2d_Array_Fn.js` | map + reduce | Per-row sums with `map`+`reduce`, find every failed test case |
+| `142_IQ_Right_Pattern_Py.js` | Pattern IQ | Right-triangle star pattern built with nested loops |
+| `testdata.csv` | Data file | Sample CSV (username, password, expected) — rows = records, cols = fields |
+
+### Concept
+
+A **2D array** is an array whose elements are themselves arrays — a **grid** of rows and columns. You reach a cell with two indexes: `grid[row][col]`. It's the natural shape for tables, matrices, and test-result sets.
+
+### Why
+
+Test data is naturally tabular — a results matrix (`[name, status, code]` per test), a CSV of login credentials, a score sheet. 2D arrays + nested loops let you store and walk that grid the same way you'd read a spreadsheet.
+
+**Q&A — why use this?**
+- **Q: How do I get the rows and columns count?** A: `grid.length` = number of rows; `grid[0].length` = columns in the first row. Rows can have **different** lengths (a jagged array), so check each row's own length.
+- **Q: Why two loops?** A: One index per dimension — the outer loop picks a **row**, the inner loop walks the **cells** in that row. `grid[i][j]` needs both `i` and `j`.
+- **Q: `for` vs `for...of` vs `forEach`?** A: Same result. `for` when you need the index (`i`/`j`); `for...of` / `forEach` when you only need the value. `forEach` can't `break` early — use `for...of` if you must stop.
+
+### Key Concepts
+
+```mermaid
+mindmap
+  root((Chapter 15 — 2D Arrays))
+    Shape
+      array of arrays
+      rows x cols
+      grid&#91;i&#93;&#91;j&#93;
+      jagged rows differ
+    Size
+      grid.length rows
+      grid&#91;0&#93;.length cols
+    Iterate
+      nested for i,j
+      for...of row then cell
+      forEach row then cell
+    Print
+      write same line
+      log&#40;&#41; ends row
+    Transform
+      map per row
+      reduce row sum
+      filter failed cases
+    Patterns
+      star triangle
+      nested loop counts
+```
+
+### Run them
+
+```bash
+node chapter_15_2D_Array/138_2D_Array.js              # → prints every cell of a 3x3 grid
+node chapter_15_2D_Array/139_2d.js                    # → grid[0][0], rows vs cols counts
+node chapter_15_2D_Array/140_REAL.js                  # → test matrix printed as a table
+node chapter_15_2D_Array/141_2d_Array_Fn.js           # → row sums [253,175,275] + failed cases
+node chapter_15_2D_Array/142_IQ_Right_Pattern_Py.js   # → right-triangle star pattern
+```
+
+---
+
+### 138 / 139 — Grid Basics & Shape
+
+**Concept:** A 2D array is `[[...], [...], [...]]` — each inner array is a row. `grid[i][j]` reads row `i`, column `j`. `grid.length` counts rows; `grid[0].length` counts columns in row 0.
+
+**Why:** Any tabular data — a 3×3 board, a score sheet, a results table — maps directly onto a grid, and the two-index access mirrors how you'd point at a spreadsheet cell.
+
+**Q&A — why use this?**
+- **Q: What is `grid[1][2]`?** A: Row index 1 (second row), column index 2 (third cell). Both indexes are zero-based.
+- **Q: How big is the grid?** A: `grid.length` rows; for a rectangular grid, `grid[0].length` cols. Total cells = rows × cols.
+- **Q: Are all rows the same length?** A: Not necessarily. A **jagged** array has rows of different lengths — always read each row's own `.length` inside the loop.
+
+```mermaid
+flowchart LR
+    G["grid = &#91;&#91;1,2,3&#93;,&#91;4,5,6&#93;,&#91;7,8,9&#93;&#93;"] --> R0["grid&#91;0&#93; → &#91;1,2,3&#93; (row)"]
+    R0 --> C["grid&#91;0&#93;&#91;2&#93; → 3 (cell)"]
+    G --> L1["grid.length → 3 rows"]
+    G --> L2["grid&#91;0&#93;.length → 3 cols"]
+    style G fill:#e3f2fd,stroke:#01579b
+```
+
+```js
+// 138 + 139 — combined
+let grid = [
+    [10, 20, 30],
+    [40, 50, 60],
+    [70, 80, 90]
+];
+
+console.log(grid[0][0]);       // 10  — row 0, col 0
+console.log(grid[0][2]);       // 30  — row 0, col 2
+console.log(grid.length);      // 3   — number of rows
+console.log(grid[0].length);   // 3   — columns in row 0
+```
+
+---
+
+### 140 — Walking a Test Matrix (`for` / `for...of` / `forEach`)
+
+**Concept:** Three ways to visit every cell of a grid, all using two loops: classic `for` (with `i`/`j`), `for...of` (value-by-value), and `forEach`. Printing a row on one line needs `process.stdout.write` (no newline) plus an empty `console.log()` to end the row.
+
+**Why:** A test-results matrix (`[name, status, code]` per row) is exactly this shape — you loop it to count executed tests, count passes, or pull the failing status codes.
+
+**Q&A — why use this?**
+- **Q: Why `process.stdout.write` instead of `console.log` for cells?** A: `write` prints with **no** newline, so cells stay on the same line. `console.log` always adds `\n`, which would put every cell on its own line.
+- **Q: What does the empty `console.log()` do?** A: Prints just a newline — it **ends the current row** so the next row starts below it.
+- **Q: Which loop should I pick?** A: `for` when you need indexes; `for...of`/`forEach` when you only need values. Need to stop early? `for...of` supports `break`; `forEach` does not.
+
+```mermaid
+flowchart TD
+    Start["testMatrix"] --> Outer["outer loop → pick a ROW"]
+    Outer --> Inner["inner loop → each CELL"]
+    Inner --> W["write(cell + ' ') → same line"]
+    Inner -->|row done| NL["console.log() → newline"]
+    NL --> Outer
+    style W fill:#e8f5e9,stroke:#2e7d32
+    style NL fill:#fff3e0,stroke:#e65100
+```
+
+```js
+// 140_REAL.js
+let testMatrix = [
+    ["login",    "pass", 200],
+    ["checkout", "fail", 404],
+    ["search",   "pass", 180]
+];
+
+testMatrix.forEach(row => {
+    row.forEach(cell => process.stdout.write(cell + " ")); // cells on one line
+    console.log();                                          // end the row
+});
+// login pass 200
+// checkout fail 404
+// search pass 180
+```
+
+---
+
+### 141 — Transforming Grids (`map` + `reduce`, filtering failures)
+
+**Concept:** Array methods compose on grids: `grid.map(row => row.reduce(...))` collapses each row to a single value (e.g. a sum); nested loops with an `if` pull out only the cells you care about.
+
+**Why:** Real analysis on tabular data — total each student's scores, sum each test suite's timings, or list every test case that contains `"fail"` — is just map/reduce/filter applied row by row.
+
+**Q&A — why use this?**
+- **Q: How do I sum each row?** A: `scores.map(row => row.reduce((a, b) => a + b, 0))` — `map` runs once per row, `reduce` adds that row's cells into one number. Result is a 1D array of sums.
+- **Q: Why the `0` in `reduce(..., 0)`?** A: It's the **initial accumulator**. Without it, `reduce` uses the first element as the seed — which breaks on an empty row. Always seed numeric reduces with `0`.
+- **Q: How do I find failing tests?** A: Nested loop, and `if (cell.includes("fail"))` keep it. Works because each cell is a string like `"filter-fail"`.
+
+```mermaid
+flowchart LR
+    S["scores = &#91;&#91;85,90,78&#93;,&#91;60,45,70&#93;,&#91;95,88,92&#93;&#93;"] --> M["map per row"]
+    M --> R["reduce each row → sum"]
+    R --> O["&#91;253, 175, 275&#93;"]
+    style S fill:#e3f2fd,stroke:#01579b
+    style O fill:#e8f5e9,stroke:#2e7d32
+```
+
+```js
+// 141_2d_Array_Fn.js
+let scores = [
+    [85, 90, 78],   // 253
+    [60, 45, 70],   // 175
+    [95, 88, 92]    // 275
+];
+let rowSums = scores.map(row => row.reduce((a, b) => a + b, 0));
+console.log(rowSums);            // [ 253, 175, 275 ]
+
+let suiteResults = [
+    ["login-pass", "register-pass", "logout-pass"],
+    ["search-pass", "filter-fail",  "sort-pass"],
+    ["checkout-fail", "payment-fail", "confirm-pass"]
+];
+for (let i = 0; i < suiteResults.length; i++) {
+    for (let j = 0; j < suiteResults[i].length; j++) {
+        if (suiteResults[i][j].includes("fail")) {
+            console.log(suiteResults[i][j]); // filter-fail / checkout-fail / payment-fail
+        }
+    }
+}
+```
+
+---
+
+### 142 — Pattern IQ: Right-Triangle Stars (nested loops)
+
+**Concept:** A classic interview warm-up — the **outer** loop controls how many rows, the **inner** loop prints that many stars on the current row. Row `i` gets `i` stars.
+
+**Why:** Star patterns are the simplest way to *feel* how nested loops drive a 2D shape — the inner loop count depends on the outer loop's current value, which is the core idea behind every grid algorithm.
+
+**Q&A — why use this?**
+- **Q: Why does row `i` print `i` stars?** A: The inner loop runs `j` from `1` to `i`, so its count grows by one each outer pass — 1 star, then 2, then 3…
+- **Q: Build the row string or print each star?** A: Build a `row` string in the inner loop, then `console.log(row)` once per row — fewer prints, and the whole row lands on one line.
+- **Q: How is this different from a square grid?** A: The inner bound is `i` (variable), not a fixed `n` — that's what makes it a *triangle* instead of a full rectangle.
+
+```mermaid
+flowchart TD
+    O["outer i = 1..n (rows)"] --> I["inner j = 1..i (stars)"]
+    I --> B["row += '*'"]
+    B -->|inner done| P["console.log(row)"]
+    P --> O
+    style B fill:#e8f5e9,stroke:#2e7d32
+```
+
+```js
+// 142_IQ_Right_Pattern_Py.js
+let n = 5;
+for (let i = 1; i <= n; i++) {
+    let row = "";
+    for (let j = 1; j <= i; j++) {
+        row += "*";
+    }
+    console.log(row);
+}
+// *
+// **
+// ***
+// ****
+// *****
+```
+
+---
+
+## 📖 What's in Chapter 16 — Callbacks (Available Now)
+
+### Files
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `143_Callback.js` | Callback basics | Pass a function into another function — named, anonymous, and arrow forms |
+| `144_CB.js` | The callback you already use | `test('title', () => {})` — the second arg *is* a callback |
+| `145_CB_Fn.js` | Three ways to pass | Same `cafe(item, callback)` called with a named fn, an anonymous fn, an arrow fn |
+| `146_PW_CB.js` | Playwright shape | A mini `test(testName, callback)` — exactly how Playwright's `test()` is built |
+| `147_JS_CB.js` | Why order surprises you | `setTimeout` — Test 3 prints **before** Test 2; the event loop defers |
+| `148_Sync_CB.js` | Synchronous callback | `forEach` runs the callback **now**, item-by-item, in order |
+| `149_Async_CB.js` | Asynchronous callback | `setTimeout` runs the callback **later**, after the stack clears |
+| `150_CB_Hell.js` | Callback hell | 4-step login nested inside each other's callbacks — the pyramid begins |
+| `151_CB_Hell_20_Steps.js` | Pyramid of Doom | 24-step E2E checkout — code drifts further right with every nested step |
+| `152_CB_Parameter.js` | Callbacks with args | The caller passes data **into** the callback — `callback(name, status)` |
+| `153_CB_Return.js` | Callback drives the result | `calculate(a, b, operation)` — the callback decides what gets returned |
+
+### Concept
+
+A **callback** is a function you pass as an argument to another function, to be called back later — either immediately (synchronous, like `forEach`) or after some work finishes (asynchronous, like `setTimeout` or a network response).
+
+### Why
+
+Every test framework runs on callbacks — `test('name', async () => {...})` hands your test body to the runner as a callback. Understanding sync vs async callbacks (and how they nest into "callback hell") is the foundation for Promises and `async/await` coming next.
+
+**Q&A — why use this?**
+- **Q: Why does `Test 3` print before `Test 2` in `147_JS_CB.js`?** A: `setTimeout` is asynchronous — its callback is parked until the call stack is empty, so the synchronous `console.log("Test 3")` runs first even with a `0ms` delay.
+- **Q: Sync or async callback — how do I tell?** A: `forEach`/`map` invoke the callback **immediately** and finish before the next line. `setTimeout`/network/file callbacks fire **later**, after the surrounding code completes.
+- **Q: What's "callback hell"?** A: When each async step must wait for the previous one, you nest callbacks inside callbacks — the code marches right into a "pyramid of doom" (`151`). Promises and `async/await` flatten it.
+
+### Key Concepts
+
+```mermaid
+mindmap
+  root((Chapter 16 — Callbacks))
+    What
+      function passed as argument
+      called back later
+      named / anonymous / arrow
+    Where you see it
+      test&#40;name, callback&#41;
+      forEach&#40;callback&#41;
+      setTimeout&#40;callback, ms&#41;
+    Sync
+      runs now
+      forEach in order
+      finishes before next line
+    Async
+      runs later
+      setTimeout defers
+      event loop parks it
+    Callback hell
+      nest step in step
+      pyramid of doom
+      drifts right
+    With parameters
+      callback&#40;name, status&#41;
+      caller passes data in
+    Returns
+      operation&#40;a, b&#41;
+      callback decides result
+    Next
+      Promises
+      async / await
+```
+
+### Run them
+
+```bash
+node chapter_16_Callback/143_Callback.js            # → order placed, then each callback fires
+node chapter_16_Callback/147_JS_CB.js               # → Test 1, Test 3, then Test 2 (2s later)
+node chapter_16_Callback/148_Sync_CB.js             # → Test 0..3 printed in order, synchronously
+node chapter_16_Callback/149_Async_CB.js            # → Test 1, Test 3, then Test 2 deferred
+node chapter_16_Callback/150_CB_Hell.js             # → Steps 1-4 then "Test Complete!"
+node chapter_16_Callback/152_CB_Parameter.js        # → "Welcome, Dev" then "Let's start testing!"
+node chapter_16_Callback/153_CB_Return.js           # → 15, then step1..4 then "Done!"
+```
+
+---
+
+### 147 — Sync vs Async: why order surprises you
+
+**Concept:** A synchronous callback runs **immediately** and finishes before the next line. An asynchronous callback (like `setTimeout`'s) is handed to the event loop and runs **later**, after all the synchronous code has finished — even when the delay is `0`.
+
+**Why:** This single idea explains every "why did my assertion run before the page loaded?" bug. Tests are full of async work (navigation, network, animations); knowing what defers and what doesn't is the difference between a stable suite and flake.
+
+**Q&A — why use this?**
+- **Q: Does a bigger `setTimeout` delay change the order?** A: No — even `setTimeout(fn, 0)` runs *after* the synchronous lines. The delay is a minimum wait, not a priority.
+- **Q: What actually defers the callback?** A: The event loop. Async callbacks wait in a queue until the call stack is empty, then run one at a time.
+- **Q: How does this connect to Playwright?** A: `await page.click()` is the modern fix — it pauses until the async work resolves, so your next line truly runs *after* it. Callbacks were the old way to express the same "do this when done".
+
+```mermaid
+sequenceDiagram
+    participant S as Call Stack (sync)
+    participant Q as Callback Queue (async)
+    S->>S: console.log("Test 1: started")
+    S->>Q: setTimeout(cb, 2000) — park cb
+    S->>S: console.log("Test 3: next test")
+    Note over S: stack empties
+    Q-->>S: 2s later → run cb
+    S->>S: console.log("Test 2: API response")
+```
+
+```js
+console.log("Test 1: started");
+
+setTimeout(function () {
+    console.log("Test 2: API response received");
+}, 2000);
+
+console.log("Test 3: moving to next test");
+
+// Output order:
+// Test 1: started
+// Test 3: moving to next test
+// Test 2: API response received   ← async, runs last
+```
+
+| Callback kind | Runs | Example | Blocks next line? |
+|---------------|------|---------|-------------------|
+| Synchronous | now, in order | `forEach`, `map` | ✅ yes |
+| Asynchronous | later, via event loop | `setTimeout`, network | ❌ no |
+
+---
+
+## 📖 What's in Chapter 17 — Promises (Available Now)
+
+### Files
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `154_Promise.js` | Creating a Promise | `new Promise((resolve, reject) => {})` — the executor runs now; logging the promise shows its state |
+| `155_Promise_REAL_API.js` | `.then()` on resolve | `.then()` fires **only** when the promise resolves — read `response.status` |
+| `156_Promise_REAL_API_PART2.js` | `.catch()` on reject | `.catch()` fires **only** on reject; `.then()` is skipped entirely |
+| `157_Finally.js` | `.finally()` always runs | Cleanup that runs regardless of resolve or reject |
+| `158_Call_Py_Problem.js` | Promise chaining | Return a promise from `.then()` to flatten the callback pyramid into a flat chain |
+| `159_Promise_ALL.js` | `Promise.allSettled` | Run checks in parallel, get **every** result (status + value/reason), never stop at first fail |
+| `160_Promise_IQ.js` | IQ traps | Chaining order, `throw` inside `.then()` jumps to `.catch()`, `all` vs `allSettled` |
+
+### Concept
+
+A **Promise** is an object representing a value that isn't ready yet — it's in one of three states: **pending**, **fulfilled** (`resolve`), or **rejected** (`reject`). You attach `.then()` / `.catch()` / `.finally()` handlers that run when it settles.
+
+### Why
+
+Promises fix callback hell — instead of nesting callbacks into a rightward "pyramid of doom" (Ch 16), you chain flat `.then()` steps. They're the foundation under `async/await` and every Playwright `await page.*` call.
+
+**Q&A — why use this?**
+- **Q: When does `.then()` vs `.catch()` run?** A: `.then()` runs only when the promise **resolves**; `.catch()` runs only when it **rejects**. `.finally()` runs either way.
+- **Q: How does chaining beat callback hell?** A: Returning a promise from inside `.then()` lets the next `.then()` wait for it — the steps stay flat and left-aligned instead of nesting deeper each time.
+- **Q: `Promise.all` or `Promise.allSettled`?** A: `all` rejects the moment **any** promise fails (fail-fast). `allSettled` waits for **all** and reports each one's status — what you want for a test report that shouldn't stop at the first failure.
+
+### Key Concepts
+
+```mermaid
+mindmap
+  root((Chapter 17 — Promises))
+    States
+      pending
+      fulfilled resolve
+      rejected reject
+    Handlers
+      then on resolve
+      catch on reject
+      finally always
+    Chaining
+      return promise in then
+      flat steps not nested
+      kills callback hell
+    Combinators
+      all fail-fast
+      allSettled every result
+    IQ traps
+      throw in then jumps to catch
+      then skipped on reject
+      all stops at first fail
+    Next
+      async / await
+```
+
+### Run them
+
+```bash
+node chapter_17_Promise/154_Promise.js                 # → Promise { 'Pizza is delivered...' }
+node chapter_17_Promise/155_Promise_REAL_API.js         # → 200
+node chapter_17_Promise/156_Promise_REAL_API_PART2.js   # → "500 Error" (catch runs, then skipped)
+node chapter_17_Promise/157_Finally.js                  # → { status: 'done' } then always-runs line
+node chapter_17_Promise/158_Call_Py_Problem.js          # → Step 1..4 flat chain then "Done execution!"
+node chapter_17_Promise/159_Promise_ALL.js              # → Test 1 fulfilled, Test 2 rejected, Test 3 fulfilled
+node chapter_17_Promise/160_Promise_IQ.js               # → allSettled report objects
+```
+
+---
+
+### 158 — Promise chaining: flatten the pyramid
+
+**Concept:** When each async step returns a promise, you `return` it from inside `.then()` so the **next** `.then()` waits for it. The four-level login pyramid from Ch 16 becomes a flat, top-to-bottom chain.
+
+**Why:** Callback hell drifts right with every step and is hard to read or error-handle. A promise chain stays left-aligned and gets **one** `.catch()` at the end for every step, plus **one** `.finally()` for cleanup.
+
+**Q&A — why use this?**
+- **Q: Why `return goToLogin()` instead of just calling it?** A: Returning the promise makes the next `.then()` wait for it to resolve. Without `return`, the chain doesn't wait and order breaks.
+- **Q: How many `.catch()` blocks do I need?** A: One at the end. Any reject (or `throw`) anywhere in the chain skips straight to it — no per-step error handling.
+- **Q: Does `.finally()` see the result?** A: No — `.finally()` takes no argument; it runs for cleanup (close browser, log "done") whether the chain resolved or rejected.
+
+```mermaid
+flowchart TD
+    A[openBrowser&#41;] --> B[then: goToLogin&#41;]
+    B --> C[then: enterCredentials&#41;]
+    C --> D[then: clickLogin&#41;]
+    D --> E[catch: any error]
+    E --> F[finally: Done execution]
+```
+
+```js
+openBrowser()
+    .then(function (msg) {
+        console.log("Step 1", msg);
+        return goToLogin();        // return → next .then waits
+    })
+    .then(function (msg) {
+        console.log("Step 2 :", msg);
+        return enterCredentials();
+    })
+    .then(function (msg) {
+        console.log("Step 3 :", msg);
+        return clickLogin();
+    })
+    .then(function (msg) {
+        console.log("Step 4 :", msg);
+    })
+    .catch(function (error) {        // one catch for the whole chain
+        console.log("Error:", error);
+    })
+    .finally(function () {           // always runs — cleanup
+        console.log("Done execution!");
+    });
+```
+
+| Approach | Shape | Error handling |
+|----------|-------|----------------|
+| Callbacks (Ch 16) | nested pyramid, drifts right | one `catch` per level |
+| Promise chain | flat `.then()` steps | one `.catch()` for all |
+
+---
+
+## 📖 What's in Chapter 18 — Async / Await (Available Now)
+
+### Files
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `161_Async.js` | `async` + `try/catch/finally` | `await` a rejected promise; `catch` handles the error, `finally` always cleans up |
+| `162_Aysnc_P2.js` | `await` unwraps a promise | `await getToken()` gives the value, not the promise — the `await page.goto()` pattern |
+| `163_PyODom.js` | Flat E2E with `await` | The Ch 17 login chain rewritten as plain top-to-bottom `await` steps |
+| `164_Async_Ex.js` | Playwright test shape | `test('...', async ({ page }) => {})` + `await expect(page).toHaveTitle()` |
+| `165_AA_Seq.js` | Sequential | Three awaits in a row — each waits for the last (~6s total when each is 2s) |
+| `165_AA_Parallel.js` | Parallel | `await Promise.allSettled([...])` fires all at once (~2s total) |
+| `166_IQ.js` | IQ traps | `await` runs lines in order; an `async` function always returns a promise |
+| `167_ACLogin.js` | Real PW test | `test.step`, `loginAs`, `await expect(...).toBeHidden()` |
+
+### Concept
+
+`async`/`await` is **syntax sugar over Promises** — mark a function `async`, then `await` any promise inside it to pause until it settles and get the value directly. Async code finally reads top-to-bottom like sync code.
+
+### Why
+
+Promise chains (`.then().then()`) still nest and are awkward to debug. `await` flattens them into ordinary lines with normal `try/catch` — exactly how every modern Playwright test is written (`await page.goto()`, `await expect()`).
+
+**Q&A — why use this?**
+- **Q: What does `await` actually do?** A: It pauses the `async` function until the promise settles, then returns the resolved value (or throws the rejection). The rest of your program keeps running.
+- **Q: How do I handle errors?** A: Plain `try/catch/finally` around the `await` — no `.catch()` handler needed. The `finally` block always runs.
+- **Q: Sequential or parallel?** A: Use sequential `await`s only when a step **depends** on the previous result. If they're independent, fire them together with `await Promise.all/allSettled([...])` — far faster.
+
+### Key Concepts
+
+```mermaid
+mindmap
+  root((Chapter 18 — Async / Await))
+    Basics
+      async marks the function
+      await pauses for a promise
+      returns the value not the promise
+    Errors
+      try / catch / finally
+      catch on reject
+      finally always
+    Sugar over promises
+      flat lines not then-chains
+      reads like sync code
+    Sequential
+      await one then next
+      step depends on previous
+      slower sum of waits
+    Parallel
+      await Promise.allSettled
+      independent steps together
+      faster max of waits
+    Playwright
+      async page fixture
+      await page.goto
+      await expect
+```
+
+### Run them
+
+```bash
+node chapter_18_Async_Await/161_Async.js          # → Error 503 reject, then "Clean up!!"
+node chapter_18_Async_Await/162_Aysnc_P2.js       # → abc123
+node chapter_18_Async_Await/163_PyODom.js         # → Step 1..4 as flat awaits
+node chapter_18_Async_Await/165_AA_Seq.js         # → Login/Dashboard/Report, Time ~6000ms
+node chapter_18_Async_Await/165_AA_Parallel.js    # → all three settled, ~2000ms total
+node chapter_18_Async_Await/166_IQ.js             # → opened, clicked, verified — in order
+```
+
+---
+
+### 165 — Sequential vs Parallel awaits
+
+**Concept:** Each `await` pauses until its promise resolves. Put them on separate lines and they run **one after another** (sequential). Hand them all to `Promise.all`/`allSettled` and `await` once, and they run **at the same time** (parallel).
+
+**Why:** Sequential is correct when step 2 needs step 1's result. But awaiting independent calls one-by-one wastes time — three 2-second calls take 6s sequentially vs ~2s in parallel. Picking right is the difference between a slow suite and a fast one.
+
+**Q&A — why use this?**
+- **Q: When MUST I go sequential?** A: When a later step uses an earlier step's value — login → use the token → call the API. Order matters, so you wait.
+- **Q: When should I go parallel?** A: When the calls are independent (check auth, check DB, check cache). Fire them together and await all results at once.
+- **Q: `Promise.all` or `allSettled` for parallel?** A: `all` rejects on the first failure; `allSettled` always returns every result with its status — better for a test report.
+
+```mermaid
+flowchart LR
+    subgraph Seq["Sequential ~6s"]
+        S1[await Login 2s] --> S2[await Dashboard 2s] --> S3[await Report 2s]
+    end
+    subgraph Par["Parallel ~2s"]
+        P0[await Promise.allSettled] --> P1[Auth 2s]
+        P0 --> P2[Account 2s]
+        P0 --> P3[Support 2s]
+    end
+```
+
+```js
+// Sequential — each waits for the previous (~6s)
+let r1 = await apiCall("Login");
+let r2 = await apiCall("Dashboard");
+let r3 = await apiCall("Report");
+
+// Parallel — all fire at once, await together (~2s)
+let [a, b, c] = await Promise.allSettled([
+    apiCall("Auth Service"),
+    apiCall("User Account Creation"),
+    apiCall("Support Page API"),
+]);
+```
+
+| Pattern | When | Speed (3 × 2s calls) |
+|---------|------|----------------------|
+| Sequential `await`s | step depends on previous | ~6s (sum) |
+| Parallel `Promise.allSettled` | independent steps | ~2s (max) |
+
+---
+
 ## 🔭 What's Coming Next
 
 ```mermaid
 graph TD
-    subgraph next["Next Up — 2D Arrays, Callbacks"]
-        N1[Ch 13: Strings ✅] --> N2[Ch 14: Objects ✅]
-        N2 --> N3[Ch 15: 2D Arrays]
-        N3 --> N4[Ch 16: Callbacks]
+    subgraph next["Next Up — Playwright Basics"]
+        N1[Ch 17: Promises ✅] --> N2[Ch 18: Async / Await ✅]
+        N2 --> N3[Ch 19: Playwright Basics]
+        N3 --> N4[Ch 20: Locators & POM]
     end
 
     style next fill:#fff3e0,stroke:#e65100
@@ -3444,6 +4079,10 @@ graph TD
 - ✅ Chapter 12 — **Functions (Part 2)**: all-three forms side-by-side, IIFE, default/rest/spread params, scope, closures, higher-order functions, pure functions (files `104`–`117`)
 - ✅ Chapter 13 — **Strings**: quotes/template literals, properties & indexing, search/check, slice vs substring, transform (case/trim/replace/split), conversion + a full method cheat sheet (files `118`–`123`)
 - ✅ Chapter 14 — **Objects**: literals & access, primitive vs reference, destructuring, spread copy, `let` vs `const` for objects, get/set + `this`, `keys`/`values`/`entries` (files `124`–`137`)
+- ✅ Chapter 15 — **2D Arrays**: grids & shape (rows × cols), nested-loop traversal (`for`/`for...of`/`forEach`), `write` vs `log` table printing, `map`+`reduce` row sums, failed-case filtering, star-pattern IQ (files `138`–`142`)
+- ✅ Chapter 16 — **Callbacks**: pass-a-function (named/anon/arrow), the `test()` callback shape, sync vs async (`forEach` vs `setTimeout`), event-loop ordering, callback hell / 24-step pyramid of doom, callbacks with parameters & return-driving (files `143`–`153`)
+- ✅ Chapter 17 — **Promises**: `new Promise` (resolve/reject), `.then`/`.catch`/`.finally`, chaining to flatten callback hell, `Promise.all` vs `allSettled`, IQ traps (`throw` in `.then`, settle order) (files `154`–`160`)
+- ✅ Chapter 18 — **Async / Await**: `async`/`await` as sugar over promises, `try/catch/finally` error handling, flat E2E awaits vs `.then()` chains, sequential vs parallel (`Promise.allSettled`), first real Playwright tests (files `161`–`167`)
 - ✅ **Per-chapter README** — every chapter folder now has its own deep-dive README.md
 
 ---
