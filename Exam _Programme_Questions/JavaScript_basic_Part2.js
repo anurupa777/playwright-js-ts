@@ -42,4 +42,40 @@ let result= questionName(401)
 console.log(result)
 
 // 2nd question//
+function retryApiCall() {
+    const MAX_ATTEMPTS = 5;
 
+    let attemptNumber = 0;
+    let isSuccess = false;
+    let logs = [];
+
+    do {
+        attemptNumber++;
+
+        let randomValue = Math.random();
+        isSuccess = randomValue > 0.6;
+
+        logs.push(
+            `Attempt ${attemptNumber}: ${
+                isSuccess ? "SUCCESS" : "FAILED"
+            } (randomValue = ${randomValue.toFixed(2)})`
+        );
+
+    } while (!isSuccess && attemptNumber < MAX_ATTEMPTS);
+
+    let finalResult;
+
+    if (isSuccess) {
+        finalResult = `API call succeeded after ${attemptNumber} attempt(s).`;
+    } else {
+        finalResult = `API call failed after ${MAX_ATTEMPTS} attempts.`;
+    }
+
+    return {
+        attempts: logs,
+        result: finalResult
+    };
+}
+
+// Example function call
+retryApiCall(); 
