@@ -79,6 +79,7 @@ graph TB
         end
 
         subgraph pw["🎭 Playwright (Weeks 10–12)"]
+            pw0["Ch 19: PW Basics ✅"]
             pw1["Ch 24: PW Fundamentals"]
             cli["Lecture: Playwright CLI"]
             ai["Lecture: AI Agents"]
@@ -308,6 +309,13 @@ graph TB
 │   ├── 165_AA_Parallel.js              # Parallel — await Promise.allSettled([...]) (~fast)
 │   ├── 166_IQ.js                       # IQ — await order, async returns a promise
 │   └── 167_ACLogin.js                  # Real PW test — test.step, loginAs, toBeHidden
+│
+├── chapter_19_Playwright_Basics/       ✅ Playwright Basics — first real project, page fixture, codegen
+│   ├── tests/
+│   │   ├── example.spec.ts             # First test — page.goto + toHaveTitle on TTACart
+│   │   └── codegen-tta-cart.spec.ts    # Recorded via codegen — fill login, assert error alert
+│   ├── playwright.config.ts            # defineConfig — testDir, headless:false, html reporter, trace
+│   └── package.json                    # @playwright/test dependency
 │
 └── README.md                           👋 You are here
 ```
@@ -4050,13 +4058,86 @@ let [a, b, c] = await Promise.allSettled([
 
 ---
 
+## 📖 What's in Chapter 19 — Playwright Basics (Available Now)
+
+The first **real Playwright project** — its own `package.json`, a `playwright.config.ts`, and TypeScript tests under `tests/`. This is where every JS/async concept from Ch 1–18 starts paying off.
+
+### Files
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `tests/example.spec.ts` | First test | `test()`, the built-in `page` fixture, `page.goto`, `expect(page).toHaveTitle` |
+| `tests/codegen-tta-cart.spec.ts` | Codegen recording | A login flow recorded by `codegen` — `locator`, `fill`, `click`, `toBeVisible`, `toContainText`, `toMatchAriaSnapshot` |
+| `playwright.config.ts` | Project config | `defineConfig`, `testDir`, `fullyParallel`, `retries`, `reporter: 'html'`, `headless: false`, `trace` |
+
+### Concept
+
+**Concept:** Playwright drives a real browser from a Node test file. Each test receives a `page` fixture (a fresh browser tab), you `await` actions on it (`goto`, `click`, `fill`), and assert with `await expect(...)`. `codegen` watches you click through a site and writes the test for you.
+
+**Why:** It removes the boilerplate of launching browsers and managing tabs — the `page` fixture is handed to you, ready to use. `codegen` gets a working draft in seconds so you tune locators instead of writing from scratch.
+
+**Q&A — why use this?**
+- **Q: Where does `page` come from?** A: It's a built-in Playwright fixture, auto-injected into the test callback — `async ({ page }) => {}`. A clean isolated browser context per test, no manual `browser.newPage()`.
+- **Q: Why is everything `await`-ed?** A: Browser actions are async (Ch 18). `goto`, `click`, `fill`, and `expect()` all return promises — skip an `await` and you assert before the page is ready, causing flaky failures.
+- **Q: What's `toMatchAriaSnapshot`?** A: An accessibility-tree assertion `codegen` emits — it captures the element's ARIA role/name (e.g. `- alert: "..."`) so the test verifies the page is accessible, not just visually correct.
+
+```mermaid
+flowchart LR
+    A[npx playwright test] --> B[Read playwright.config.ts]
+    B --> C[Launch chromium<br/>headless:false]
+    C --> D[Inject page fixture]
+    D --> E["page.goto&#40;ttacart&#41;"]
+    E --> F["page.locator&#40;...&#41;.fill / click"]
+    F --> G["await expect&#40;...&#41;"]
+    G --> H{Pass?}
+    H -->|Yes| I[✅ html report]
+    H -->|No, retry| J[Trace on-first-retry 🔍]
+    style I fill:#e8f5e9,stroke:#2e7d32
+    style J fill:#fff3e0,stroke:#e65100
+```
+
+```ts
+// tests/example.spec.ts — your first Playwright test
+import { test, expect } from '@playwright/test'
+
+// `page` is a built-in fixture — a fresh browser tab, handed to you.
+test("Verify that the title will be TTA Cart", async ({ page }) => {
+  await page.goto("https://app.thetestingacademy.com/playwright/ttacart/");
+  await expect(page).toHaveTitle("TTACart - Login");
+});
+
+// tests/codegen-tta-cart.spec.ts — recorded with `npx playwright codegen`
+test('login shows error for bad credentials', async ({ page }) => {
+  await page.goto('https://app.thetestingacademy.com/playwright/ttacart/');
+  await page.locator('[data-test="username"]').fill('abc');
+  await page.locator('[data-test="password"]').fill('abcbcbc');
+  await page.locator('[data-test="login-button"]').click();
+  await expect(page.locator('[data-test="error"]')).toBeVisible();
+  await expect(page.locator('[data-test="error"]'))
+    .toContainText('Epic sadface: Username and password do not match any user in this service');
+});
+```
+
+### Run them
+
+```bash
+cd chapter_19_Playwright_Basics
+npm install                  # installs @playwright/test
+npx playwright install       # downloads the browsers
+npx playwright test          # run all tests (headed — headless:false)
+npx playwright show-report   # open the html report
+npx playwright codegen https://app.thetestingacademy.com/playwright/ttacart/  # record your own
+```
+
+---
+
 ## 🔭 What's Coming Next
 
 ```mermaid
 graph TD
     subgraph next["Next Up — Playwright Basics"]
         N1[Ch 17: Promises ✅] --> N2[Ch 18: Async / Await ✅]
-        N2 --> N3[Ch 19: Playwright Basics]
+        N2 --> N3[Ch 19: Playwright Basics ✅]
         N3 --> N4[Ch 20: Locators & POM]
     end
 
@@ -4082,6 +4163,7 @@ graph TD
 - ✅ Chapter 16 — **Callbacks**: pass-a-function (named/anon/arrow), the `test()` callback shape, sync vs async (`forEach` vs `setTimeout`), event-loop ordering, callback hell / 24-step pyramid of doom, callbacks with parameters & return-driving (files `143`–`153`)
 - ✅ Chapter 17 — **Promises**: `new Promise` (resolve/reject), `.then`/`.catch`/`.finally`, chaining to flatten callback hell, `Promise.all` vs `allSettled`, IQ traps (`throw` in `.then`, settle order) (files `154`–`160`)
 - ✅ Chapter 18 — **Async / Await**: `async`/`await` as sugar over promises, `try/catch/finally` error handling, flat E2E awaits vs `.then()` chains, sequential vs parallel (`Promise.allSettled`), first real Playwright tests (files `161`–`167`)
+- ✅ Chapter 19 — **Playwright Basics**: first real PW project — `playwright.config.ts`, the built-in `page` fixture, `page.goto` + `toHaveTitle`, a `codegen`-recorded login flow (`fill`/`click`/`toBeVisible`/`toContainText`/`toMatchAriaSnapshot`)
 - ✅ **Per-chapter README** — every chapter folder now has its own deep-dive README.md
 
 ---
