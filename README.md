@@ -324,7 +324,7 @@ LearnPlaywrightBatch2x/
 │   ├── playwright.config.ts            # defineConfig — testDir, headless:false, html reporter, trace
 │   └── package.json                    # @playwright/test dependency
 │
-├── chaptet_20_OOPs_Basics/             ✅ OOP Basics — ES modules + classes & objects
+├── chaptet_20_OOPs_Basics/             ✅ OOP Basics — modules + 4 pillars of OOP
 │   ├── utils.js                        # named exports — BASE_URL, formatTestName
 │   ├── testutils.js                    # named exports — BASE_URL, formatUpperCaseString
 │   ├── logger.js                       # default export (log) + named export (log2)
@@ -333,14 +333,36 @@ LearnPlaywrightBatch2x/
 │   │   ├── 169_Utils.js                # named imports + `as` alias for name clashes
 │   │   ├── 170_Logger.js               # default import — no braces, any name
 │   │   └── ExplainDefault.md           # deep-dive: default vs non-default exports
-│   └── 02_CLASS_OBJECT/
-│       ├── 171_Class_Object.js         # class shape — attributes + behaviour
-│       ├── 172_Class_Object2.js        # constructor fires on `new`, object reference
-│       ├── 173_Car.js                  # parameterised constructor + `this`
-│       ├── 174_REAL_Browser.js         # TestCase class — method vs function
-│       ├── 175_IQ.js                    # param constructor, per-object state
-│       ├── 176_Private_Public.js       # `#private` fields vs public
-│       └── 177_Statis.js / 178_Statis.js  # static fields & methods (class-level)
+│   ├── 02_CLASS_OBJECT/
+│   │   ├── 171_Class_Object.js         # class shape — attributes + behaviour
+│   │   ├── 172_Class_Object2.js        # constructor fires on `new`, object reference
+│   │   ├── 173_Car.js                  # parameterised constructor + `this`
+│   │   ├── 174_REAL_Browser.js         # TestCase class — method vs function
+│   │   ├── 175_IQ.js                    # param constructor, per-object state
+│   │   ├── 176_Private_Public.js       # `#private` fields vs public
+│   │   └── 177_Statis.js / 178_Statis.js  # static fields & methods (class-level)
+│   ├── 03_ENCAPSULATION/
+│   │   ├── 179_Ecap.js                 # #balance hidden, deposit/getBalance gate it
+│   │   ├── 180_REAK_EXAMPLE.js         # getter/setter for #private fields
+│   │   ├── 181_Ecap_Car.js             # get/setEngine controlled access
+│   │   └── 182_ECap_Bank.js            # setter guard — only cashier can mutate
+│   ├── 04_Inheritance/
+│   │   ├── 183_Single_Inheritance.js   # extends — child reuses parent methods
+│   │   ├── 184_SI_Example.js           # super(name) calls parent constructor
+│   │   ├── 185_Single_Inheritance_Con.js  # override — child setup wins
+│   │   ├── 186_IQ.js                   # super.method() calls parent's version
+│   │   ├── 187_IQ2.js                  # one loop, many subclasses (polymorphism)
+│   │   ├── 188_REAL_PageObject_Model.js  # BasePage -> Login/Dashboard/Cart
+│   │   ├── 189_Multiple_Inheritance.js # JS forbids extends A, B
+│   │   ├── 190_Multiple_Level_Inheritance.js  # Base -> Auth -> Admin
+│   │   └── 191_Hierarchial_Inheritance.js  # one parent, many children
+│   ├── 05_Polymorphism/
+│   │   └── 192_Method_Overriding.js    # same setup(), subclass redefines it
+│   └── Interview_Questions/
+│       ├── EX1.js                      # Bug class — fields + display()
+│       ├── EX2.js                      # constructor default values
+│       ├── EX3.js                      # `this` per object
+│       └── EX4.js                      # method chaining — return this
 │
 └── README.md                           👋 You are here
 ```
@@ -4318,6 +4340,160 @@ node 02_CLASS_OBJECT/176_Private_Public.js  # #private fields
 node 02_CLASS_OBJECT/177_Statis.js       # static members
 ```
 
+### Part 3 — Encapsulation (`03_ENCAPSULATION/`)
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `179_Ecap.js` | Hide state | `#balance` is private; `deposit()` / `getBalance()` are the only doors |
+| `180_REAK_EXAMPLE.js` | Getter / setter | Read `#child1` via `getChild1()`, change via `setChild1()` |
+| `181_Ecap_Car.js` | Controlled access | `getEngine` / `setEngine` wrap a private `#engine` |
+| `182_ECap_Bank.js` | Guarded setter | `setBalance` mutates only when `isCashier` — validation on write |
+
+**Concept:** Encapsulation = hide internal data behind `#private` fields and expose it only through methods (getters/setters). The object guards its own state.
+
+**Why:** Outside code can't corrupt internals. A setter can validate (`if (amount > 0)`, `if (isCashier)`) before allowing a change — impossible if the field were public.
+
+**Q&A — why use this?**
+- **Q: Difference from just using `#`?** A: `#` is the mechanism; encapsulation is the pattern — private field + public method gate. The method is where rules live.
+- **Q: Why a setter instead of a public field?** A: A setter can reject bad input. `182_ECap_Bank.js` blocks non-cashiers from changing the balance.
+- **Q: Where in testing?** A: A Page Object hides its locators (`#usernameField`) and exposes `login()` — callers can't fiddle with selectors.
+
+```mermaid
+flowchart LR
+    Caller -->|deposit&#40;100&#41;| M[public method]
+    Caller -.->|"account.#balance ❌"| X[blocked]
+    M -->|validates then writes| P["#balance (private)"]
+    M -->|getBalance&#40;&#41;| Caller
+    style P fill:#ffebee,stroke:#c62828
+    style X fill:#ffebee,stroke:#c62828
+```
+
+```js
+// 182_ECap_Bank.js — setter guards the write
+class ICICI {
+  #balance;
+  constructor(name, balance) { this.name = name; this.#balance = balance; }
+  getBalance() { return this.#balance; }
+  setBalance(balance, isCashier) {
+    if (isCashier) this.#balance = balance;
+    else console.log("Not allowed");      // validation on write
+  }
+}
+let acc = new ICICI("Pramod", 1000);
+acc.setBalance(10000000, false);  // Not allowed
+acc.setBalance(300000, true);     // ok — cashier
+```
+
+### Part 4 — Inheritance (`04_Inheritance/`)
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `183_Single_Inheritance.js` | `extends` | `LoginPage extends BasePage` — child reuses `open()`/`close()` |
+| `184_SI_Example.js` | `super()` | `super(name)` runs the parent constructor first |
+| `185_Single_Inheritance_Con.js` | Override | Child `setup()` replaces parent's |
+| `186_IQ.js` | `super.method()` | Call the parent's version, then add to it |
+| `187_IQ2.js` | Polymorphic loop | One array of subclasses, each `execute()` differs |
+| `188_REAL_PageObject_Model.js` | Real POM | `BasePage` → `Login`/`Dashboard`/`Cart`, each `verify()` |
+| `189_Multiple_Inheritance.js` | Not allowed | `extends A, B` is a `SyntaxError` in JS |
+| `190_Multiple_Level_Inheritance.js` | Multi-level | `BasePage` → `AuthPage` → `AdminPage` |
+| `191_Hierarchial_Inheritance.js` | Hierarchical | One parent, many children |
+
+**Concept:** Inheritance lets a child class `extends` a parent — reusing its fields/methods, adding its own, and optionally overriding. `super(...)` calls the parent constructor; `super.method()` calls the parent's method.
+
+**Why:** Shared behaviour lives once in a base class. Every Page Object inherits `open()`/`close()` from `BasePage` — write it once, reuse everywhere.
+
+**Q&A — why use this?**
+- **Q: `super()` vs `super.fn()`?** A: `super()` (in a constructor) runs the parent constructor. `super.fn()` calls the parent's method `fn` — used when you override but still want the parent's work.
+- **Q: Multiple inheritance?** A: JS forbids `extends A, B`. Use multi-level (`A → B → C`) or composition instead.
+- **Q: Override = lose the parent?** A: Only if you don't call `super.method()`. `186_IQ.js` calls `super.setup()` then adds extra steps.
+
+```mermaid
+classDiagram
+    BasePage <|-- LoginPage
+    BasePage <|-- DashboardPage
+    BasePage <|-- CartPage
+    BasePage : +open()
+    BasePage : +close()
+    LoginPage : +verify()
+    DashboardPage : +verify()
+    CartPage : +verify()
+```
+
+```js
+// 184_SI_Example.js — extends + super()
+class Animal {
+  constructor(name) { this.name = name; }
+  eat() { console.log(this.name + " is eating"); }
+}
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name);          // parent constructor first
+    this.breed = breed;
+  }
+  bark() { console.log(this.name + " is barking!"); }
+}
+const dog = new Dog("Rex", "Labrador");
+dog.eat();   // inherited
+dog.bark();  // own method
+
+// 186_IQ.js — override but keep parent via super.method()
+class UITest extends BaseTest {
+  setup() {
+    super.setup();                       // run parent's setup
+    console.log("UI: maximize window");  // then add to it
+  }
+}
+```
+
+### Part 5 — Polymorphism (`05_Polymorphism/`)
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `192_Method_Overriding.js` | Method overriding | Same `setup()` name, subclass supplies its own body |
+
+**Concept:** Polymorphism = "many forms". The same method name (`setup()`, `execute()`, `verify()`) behaves differently depending on the object's actual class. Calling code stays identical.
+
+**Why:** Loop over a mixed list of objects and call one method — each does the right thing. No `if (type === ...)` ladders.
+
+**Q&A — why use this?**
+- **Q: Overriding vs overloading?** A: JS does **overriding** (child redefines a parent method). It has no true overloading (same name, different signatures) — last definition wins.
+- **Q: How is it "many forms"?** A: `test.execute()` runs unit, API, or E2E logic depending on which subclass `test` is — see `187_IQ2.js`.
+- **Q: Where in frameworks?** A: A runner loops `pages.forEach(p => p.verify())`; each Page Object's `verify()` runs its own checks (`188_REAL_PageObject_Model.js`).
+
+```js
+// 192_Method_Overriding.js — same name, different body
+class BaseTest {
+  setup() { console.log("Base: open browser"); }
+}
+class APIPage extends BaseTest {
+  setup() { console.log("APITest: open browser"); }  // overrides
+}
+new APIPage().setup();   // APITest: open browser
+```
+
+### Interview Questions (`Interview_Questions/`)
+
+Four warm-up drills: `EX1` Bug class (fields + `display()`), `EX2` constructor default values, `EX3` `this` per object, `EX4` method chaining (`return this`).
+
+```js
+// EX4.js — return this enables chaining
+class Counter {
+  constructor() { this.count = 0; }
+  increment() { this.count++; return this; }   // hand back the object
+  display() { console.log("Count:", this.count); return this; }
+}
+new Counter().increment().increment().increment().display();  // Count: 3
+```
+
+### Run them
+
+```bash
+node 03_ENCAPSULATION/182_ECap_Bank.js        # guarded setter
+node 04_Inheritance/186_IQ.js                 # super.method()
+node 05_Polymorphism/192_Method_Overriding.js # overriding
+node Interview_Questions/EX4.js               # method chaining
+```
+
 ---
 
 ## 🔭 What's Coming Next
@@ -4327,7 +4503,7 @@ graph TD
     subgraph next["Next Up — Playwright Basics"]
         N1[Ch 17: Promises ✅] --> N2[Ch 18: Async / Await ✅]
         N2 --> N3[Ch 19: Playwright Basics ✅]
-        N3 --> N4[Ch 20: OOP — Modules + Classes ✅]
+        N3 --> N4[Ch 20: OOP — Modules + 4 Pillars ✅]
         N4 --> N5[Ch 21: Locators & POM]
     end
 
@@ -4354,7 +4530,7 @@ graph TD
 - ✅ Chapter 17 — **Promises**: `new Promise` (resolve/reject), `.then`/`.catch`/`.finally`, chaining to flatten callback hell, `Promise.all` vs `allSettled`, IQ traps (`throw` in `.then`, settle order) (files `154`–`160`)
 - ✅ Chapter 18 — **Async / Await**: `async`/`await` as sugar over promises, `try/catch/finally` error handling, flat E2E awaits vs `.then()` chains, sequential vs parallel (`Promise.allSettled`), first real Playwright tests (files `161`–`167`)
 - ✅ Chapter 19 — **Playwright Basics**: first real PW project — `playwright.config.ts`, the built-in `page` fixture, `page.goto` + `toHaveTitle`, a `codegen`-recorded login flow (`fill`/`click`/`toBeVisible`/`toContainText`/`toMatchAriaSnapshot`)
-- ✅ Chapter 20 — **OOP Basics (Modules + Classes & Objects)**: Part 1 ES modules — named vs default exports, `import { x as alias }`, mixing default + named (`01_EXPORT_IMPORT/` + `ExplainDefault.md`); Part 2 classes & objects — blueprint/`new`/constructor/`this`, method vs function, `#private` fields, `static` class-level members (`02_CLASS_OBJECT/171`–`178`)
+- ✅ Chapter 20 — **OOP Basics (Modules + 4 Pillars)**: Part 1 ES modules — named vs default exports, `as` alias (`01_EXPORT_IMPORT/` + `ExplainDefault.md`); Part 2 classes & objects — `new`/constructor/`this`, `#private`, `static` (`02_CLASS_OBJECT/171`–`178`); Part 3 encapsulation — `#private` + getter/setter gates, guarded writes (`03_ENCAPSULATION/179`–`182`); Part 4 inheritance — `extends`, `super()`/`super.method()`, override, multi-level, real POM (`04_Inheritance/183`–`191`); Part 5 polymorphism — method overriding (`05_Polymorphism/192`); plus 4 interview drills (`Interview_Questions/EX1`–`EX4`)
 - ✅ **Per-chapter README** — every chapter folder now has its own deep-dive README.md
 
 ---
