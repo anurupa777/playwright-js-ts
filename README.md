@@ -362,6 +362,24 @@ graph TB
 │   ├── EX3.js                          # `this` per object
 │   └── EX4.js                          # method chaining — return this
 │
+├── chapter_26_Typescript/              ✅ TypeScript — type annotations, primitives, void/never
+│   ├── 193_TS.js                       # plain JS — no types (the "before")
+│   ├── 194_TS_HelloWorld.ts            # first .ts — `let x: string`, typed params + return
+│   ├── 195_TS_Part1.ts                 # `: void` function
+│   ├── 196_TS_Part2.ts                 # primitives, arrays, any vs unknown
+│   ├── 197_TS_Part2.ts                 # unknown narrowing, arrow + object annotations
+│   ├── 198_Part3.ts                    # void vs never (throw / infinite loop)
+│   ├── 199_IQ.ts                       # typed helpers — string/number/boolean/void
+│   └── 200_IQ.ts                       # typed array filter — number[] in/out
+│
+├── chapter_27_TypeScript_Interface/    ✅ TypeScript — interfaces, optional, readonly
+│   ├── 201_IF.ts                       # interface shape — object must match
+│   ├── 202_IF_Part2.ts                 # optional `?` properties
+│   ├── 203_IF_READONLY.ts              # readonly + optional combined
+│   └── 204_IF_READOnly.ts              # readonly fields + readonly arrays
+│
+├── tsconfig.json                       ⚙️  TS compiler config (strict, nodenext, esnext)
+│
 └── README.md                           👋 You are here
 ```
 
@@ -4501,6 +4519,95 @@ node chapter_25_OOP_Interview_Questions/EX4.js          # method chaining
 
 ---
 
+## 📖 What's in Chapter 26 — TypeScript (Available Now)
+
+JavaScript with **types**. Annotate variables, parameters, and return values so the compiler catches mistakes *before* the test runs — no more `undefined is not a function` at runtime.
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `193_TS.js` | Plain JS (the "before") | Untyped `let` + `function add(a, b)` — nothing stops `add("1", 2)` |
+| `194_TS_HelloWorld.ts` | First types | `let x: string`, typed params `(a: number, b: number): number` |
+| `195_TS_Part1.ts` | `void` | A function that returns nothing |
+| `196_TS_Part2.ts` | Primitives + arrays | `string`/`number`/`boolean`/`null`, `number[]` vs `Array<string>`, `any` vs `unknown` |
+| `197_TS_Part2.ts` | Narrowing + shapes | `typeof` narrowing on `unknown`, arrow + inline object annotations |
+| `198_Part3.ts` | `void` vs `never` | `never` = throws or loops forever, no return |
+| `199_IQ.ts` / `200_IQ.ts` | Typed helpers | `string`/`number`/`boolean`/`void` fns, typed `number[]` filter |
+
+**Concept:** TypeScript = JavaScript + a type layer. You write `: type` annotations; `tsc` checks them and compiles to plain JS. Types vanish at runtime — they're a compile-time safety net.
+
+**Why:** Catch bugs at author time. A wrong argument type, a typo'd property, a missing return — all flagged in the editor instead of failing mid-test in CI.
+
+**Q&A — why use this?**
+- **Q: `any` vs `unknown`?** A: `any` switches off checking — anything goes. `unknown` is the safe version: you must narrow (`typeof x === "string"`) before using it. Prefer `unknown`.
+- **Q: `void` vs `never`?** A: `void` returns (just no useful value). `never` *never* returns — it throws or loops forever, so code after the call is unreachable.
+- **Q: How do I run a `.ts` file?** A: Node ≥ 22.18 runs it directly: `node file.ts`. Or `npx tsx file.ts`. Or compile with `npx tsc` then `node file.js`.
+
+```ts
+// 196_TS_Part2.ts — primitives, arrays, any vs unknown
+let age: number = 30;
+let numbers: number[] = [1, 2, 3];
+let names: Array<string> = ["John", "Jane"];
+let anything: any = "hello";       // unchecked — avoid
+let value: unknown = "hello";      // safe — must narrow before use
+
+// 198_Part3.ts — void vs never
+function sayHello(msg: string): void { console.log(msg); }       // returns nothing
+function throwError(message: string): never { throw new Error(message); } // never returns
+```
+
+### Run them
+
+```bash
+cd chapter_26_Typescript
+node 198_Part3.ts            # Node ≥ 22.18 runs .ts directly
+node 200_IQ.ts               # or: npx tsx 200_IQ.ts
+```
+
+---
+
+## 📖 What's in Chapter 27 — TypeScript Interfaces (Available Now)
+
+An **interface** names the shape of an object — which properties it must have and their types. The compiler then rejects any object that doesn't match.
+
+| File | Topic | What you'll learn |
+|------|-------|-------------------|
+| `201_IF.ts` | Interface basics | `interface TestCase { id: number; ... }` — objects must match exactly |
+| `202_IF_Part2.ts` | Optional `?` | `headers?: object` — property may be absent |
+| `203_IF_READONLY.ts` | `readonly` + optional | `readonly statusCode` can't be reassigned; `?` fields stay optional |
+| `204_IF_READOnly.ts` | readonly fields + arrays | `readonly x` and `readonly number[]` — frozen values |
+
+**Concept:** An interface is a contract for an object's structure. `?` marks a property optional; `readonly` blocks reassignment after creation.
+
+**Why:** API responses, test cases, configs all have a fixed shape. Declare it once as an interface and every object is checked against it — typos and missing fields fail at compile time.
+
+**Q&A — why use this?**
+- **Q: What does `?` do?** A: Makes a property optional — `response2` can include `headers`/`responseTime`, `response1` can omit them. Both satisfy the interface.
+- **Q: What does `readonly` protect?** A: Reassignment. `response.statusCode = 404` is a compile error; `response.body = "..."` (non-readonly) is fine.
+- **Q: Interface vs the inline `{ name: string }` from Ch 26?** A: Same idea — an interface is the **named, reusable** version you can apply to many objects.
+
+```ts
+// 203_IF_READONLY.ts — readonly + optional combined
+interface APIReponse {
+  readonly statusCode: number;   // can't reassign
+  body: string;
+  headers?: object;              // optional
+  responTime?: number;
+}
+let response: APIReponse = { statusCode: 200, body: '{"user": "admin"}' };
+// response.statusCode = 404;    // ❌ compile error — readonly
+response.body = "updated";        // ✅ allowed
+```
+
+### Run them
+
+```bash
+cd chapter_27_TypeScript_Interface
+node 201_IF.ts               # Node ≥ 22.18 runs .ts directly
+node 203_IF_READONLY.ts      # or: npx tsx 203_IF_READONLY.ts
+```
+
+---
+
 ## 🔭 What's Coming Next
 
 ```mermaid
@@ -4511,7 +4618,9 @@ graph TD
         N3 --> N4[Ch 20: Export / Import ✅]
         N4 --> N5[Ch 21-24: OOP 4 Pillars ✅]
         N5 --> N6[Ch 25: OOP Interview Qs ✅]
-        N6 --> N7[Ch 26: Locators & POM]
+        N6 --> N7[Ch 26: TypeScript ✅]
+        N7 --> N8[Ch 27: TS Interfaces ✅]
+        N8 --> N9[Ch 28: Locators & POM]
     end
 
     style next fill:#fff3e0,stroke:#e65100
@@ -4543,6 +4652,8 @@ graph TD
 - ✅ Chapter 23 — **Inheritance**: `extends`, `super()`/`super.method()`, override, multi-level, hierarchical, real Page Object Model (files `183`–`191`)
 - ✅ Chapter 24 — **Polymorphism**: method overriding — same name, different body per class (file `192`)
 - ✅ Chapter 25 — **OOP Interview Questions**: fields + `display()`, constructor default values, `this` per object, method chaining `return this` (`EX1`–`EX4`)
+- ✅ Chapter 26 — **TypeScript**: type annotations, primitives, `number[]`/`Array<string>`, `any` vs `unknown` + narrowing, `void` vs `never`, typed helpers (files `193`–`200`) + root `tsconfig.json`
+- ✅ Chapter 27 — **TypeScript Interfaces**: object-shape contracts, optional `?` properties, `readonly` fields & `readonly` arrays (files `201`–`204`)
 - ✅ **Per-chapter README** — every chapter folder now has its own deep-dive README.md
 
 ---
